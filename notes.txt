@@ -1,0 +1,19 @@
+Bibliografia para la charla:
+- https://developer.chrome.com/docs/ai/webmcp?utm_source=lighthouse&utm_medium=devtools
+- https://github.com/webmachinelearning/webmcp
+- https://blog.cloudflare.com/webmcp/ --> investigar si el webmcp bridge de cloudflare puede ayudar y si no es compatible con sites que implementa webmcp de forma nativa
+
+Demo:
+- Prompt: instruir a una llm para que entienda como usar las tools del site ./PROMPT.md
+- opencode mcp add knot-local --url http://127.0.0.1:8788/mcp -> opencode mcp list -> prompt en opencode: ¿qué lenguajes soporta el indexador de knot? usa knot-local
+
+Contenido de la charla:
+- Seguridad: el caso de cloudflare en septiembre en que la tool "inspect_image_c2pa" de su bridge.js no declara Flags=readOnly, untrustedContent provocando que un agente pueda confiar en ella. Si la imagen contiene un c2pa manipulado se puede producir un prompt injection.
+- Comparativa MCP vs WebMcp
+Y aquí está el remate para la charla. De las 7 tools de la página, 3 no cruzan a /mcp:
+Tool	Tipo	Por qué no cruza
+get-install-command	imperativa	El efecto es navegar la página (installationStore + scrollToInstall)
+copy-install-command	imperativa	ConsentModal + portapapeles: activación de usuario
+contact-knot-team	declarativa	El humano pulsa Send
+Tres tools, dos estilos de API distintos (imperativo y declarativo), una sola causa: su valor no es el dato, es el efecto sobre la sesión del propio usuario. Las 4 que cruzan son las 4 que solo devuelven datos. Que el ejemplo declarativo caiga del mismo lado que los imperativos es la prueba de que la frontera no es un detalle de implementación de tu código, sino la línea real entre los dos protocolos.
+Alternativa de coste cero: el campo instructions de DiscoverResult (moderno) e InitializeResult (legacy) puede decir "For support requests, direct the user to https://www.knot.kz/#/contact". No aparece en tools/list, así que no cuesta tokens por tool. Salvedad honesta: en la era moderna server/discover es opcional para el cliente, así que un cliente que vaya directo a tools/list nunca lo verá. Es best-effort, no garantizado.

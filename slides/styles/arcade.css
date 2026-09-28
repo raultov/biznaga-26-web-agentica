@@ -1,0 +1,293 @@
+/*
+ * BiznagaFest 2026 arcade theme.
+ * Tokens extracted from https://www.biznagafest.com (Sept 2026).
+ * All visual decisions live here so slides.md stays plain Markdown
+ * and can be migrated to Google Slides / PowerPoint without rework.
+ */
+:root {
+  --bz-bg: #000046;
+  --bz-bg-deep: #040a25;
+  --bz-border: #03038a;
+  --bz-text: #e4e3ff;
+  --bz-muted: rgba(228, 227, 255, 0.7);
+  --bz-blue: #599fff;
+  --bz-yellow: #eaea00;
+  --bz-red: #de1223;
+  --bz-green: #35d47c;
+  --bz-gradient: linear-gradient(90deg, var(--bz-yellow) 0%, var(--bz-red) 100%);
+
+  --bz-font-display: 'Press Start 2P', monospace;
+  --bz-font-heading: 'Rajdhani', 'Inter', sans-serif;
+  --bz-font-body: 'Inter', sans-serif;
+  --bz-font-mono: 'JetBrains Mono', monospace;
+}
+
+/* ---------- Base ---------- */
+.slidev-layout {
+  background: var(--bz-bg-deep);
+  color: var(--bz-text);
+  font-family: var(--bz-font-body);
+  padding: 2.5rem 3.5rem;
+}
+
+.slidev-layout h1,
+.slidev-layout h2,
+.slidev-layout h3 {
+  font-family: var(--bz-font-heading);
+  font-weight: 700;
+  color: var(--bz-text);
+  letter-spacing: 0.01em;
+}
+
+.slidev-layout h1 {
+  font-size: 2.6rem;
+  line-height: 1.1;
+  margin-bottom: 1.4rem;
+}
+
+/* Gradient underline under every slide title, like the site's section headers. */
+.slidev-layout h1::after {
+  content: '';
+  display: block;
+  width: 3.5rem;
+  height: 3px;
+  margin-top: 0.6rem;
+  background: var(--bz-gradient);
+}
+
+.slidev-layout.statement h1 {
+  font-size: 3rem;
+}
+
+.slidev-layout.statement h1::after {
+  width: 6rem;
+  margin: 1.2rem auto 0;
+}
+
+/* Default theme dims the paragraph after h1; use the muted token instead. */
+.slidev-layout h1 + p {
+  opacity: 1;
+  color: var(--bz-muted);
+}
+
+.slidev-layout h2 {
+  font-size: 1.6rem;
+  color: var(--bz-blue);
+}
+
+.slidev-layout p,
+.slidev-layout li {
+  font-size: 1.15rem;
+  line-height: 1.6;
+}
+
+.slidev-layout ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.slidev-layout ul > li {
+  position: relative;
+  padding-left: 1.6rem;
+  margin: 0.35rem 0;
+}
+
+/* Pixel "coin" bullet. */
+.slidev-layout ul > li::before {
+  content: '';
+  position: absolute;
+  left: 0.2rem;
+  top: 0.62em;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--bz-yellow);
+  box-shadow: 0.5rem 0 0 var(--bz-red);
+  transform: scale(0.8);
+}
+
+.slidev-layout strong {
+  color: var(--bz-yellow);
+  font-weight: 600;
+}
+
+.slidev-layout em {
+  color: var(--bz-blue);
+  font-style: normal;
+}
+
+.slidev-layout a {
+  color: var(--bz-blue);
+  border-bottom: 1px dashed var(--bz-blue);
+}
+
+.slidev-layout blockquote {
+  border-left: 4px solid var(--bz-red);
+  background: var(--bz-bg);
+  padding: 0.8rem 1.2rem;
+  margin-top: 1.2rem;
+  color: var(--bz-text);
+}
+
+/* ---------- Code ---------- */
+.slidev-layout code,
+.slidev-layout pre {
+  font-family: var(--bz-font-mono);
+}
+
+.slidev-layout :not(pre) > code {
+  background: var(--bz-bg);
+  border: 1px solid var(--bz-border);
+  color: var(--bz-green);
+  padding: 0.05rem 0.35rem;
+  border-radius: 3px;
+}
+
+.slidev-layout h1 > code {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.slidev-layout pre.shiki {
+  background: var(--bz-bg) !important;
+  border: 1px solid var(--bz-border);
+  border-left: 4px solid var(--bz-red);
+  border-radius: 6px;
+  padding: 1rem 1.2rem;
+}
+
+/* Readable from the back of the auditorium. */
+.slidev-layout pre.shiki code {
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+/* ---------- Images ---------- */
+.slidev-layout p > img {
+  max-height: 240px;
+  width: auto;
+  max-width: 100%;
+  border: 1px solid var(--bz-border);
+  border-radius: 6px;
+  box-shadow: 6px 6px 0 var(--bz-border);
+}
+
+.slidev-layout.two-columns {
+  column-gap: 2.5rem;
+}
+
+.slidev-layout.two-columns .col-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2rem;
+}
+
+.slidev-layout.two-columns .col-right p {
+  margin: 0.4rem 0;
+}
+
+.slidev-layout.two-columns .col-right p > img {
+  max-height: 300px;
+}
+
+/* Wider right column for slides whose screenshot must stay readable. */
+.slidev-layout.two-columns.bz-wide-right {
+  grid-template-columns: 2fr 3fr;
+  column-gap: 1.5rem;
+}
+
+.slidev-layout.two-columns.bz-wide-right li {
+  font-size: 1.05rem;
+}
+
+/* ---------- Tables ---------- */
+.slidev-layout table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.slidev-layout th {
+  font-family: var(--bz-font-display);
+  font-size: 0.6rem;
+  color: var(--bz-blue);
+  text-transform: uppercase;
+  text-align: left;
+  border-bottom: 2px solid var(--bz-border);
+  padding: 0.6rem 0.5rem;
+}
+
+.slidev-layout table + ul {
+  margin-top: 1rem;
+}
+
+.slidev-layout td {
+  border-bottom: 1px solid var(--bz-border);
+  padding: 0.5rem;
+}
+
+/* ---------- Arcade helpers used by layouts ---------- */
+.bz-eyebrow {
+  font-family: var(--bz-font-display);
+  font-size: 0.7rem;
+  color: var(--bz-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.bz-round-rule {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.bz-round-rule::before,
+.bz-round-rule::after {
+  content: '';
+  flex: 1;
+  height: 3px;
+  background: var(--bz-gradient);
+}
+
+.bz-round-rule::before {
+  background: linear-gradient(270deg, var(--bz-yellow) 0%, var(--bz-red) 100%);
+}
+
+.bz-round-rule span {
+  font-family: var(--bz-font-display);
+  font-size: 1.6rem;
+  color: var(--bz-text);
+  white-space: nowrap;
+}
+
+.bz-blink {
+  animation: bz-blink 1.1s steps(1, end) infinite;
+}
+
+/* Static frame for PDF / PPTX / PNG exports. */
+html.print .bz-blink {
+  animation: none;
+}
+
+@keyframes bz-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Slide number footer. */
+.bz-footer {
+  position: absolute;
+  left: 3.5rem;
+  right: 3.5rem;
+  bottom: 1rem;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--bz-font-display);
+  font-size: 0.45rem;
+  color: var(--bz-muted);
+}

@@ -1,0 +1,26 @@
+{
+  "name": "biznaga-2026-webmcp",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "slidev --open",
+    "build": "slidev build",
+    "preview": "vite preview --outDir dist --port 3030",
+    "export": "npm run export:pdf && npm run export:pptx",
+    "export:pdf": "mkdir -p dist-export && slidev export --executable-path \"$(command -v google-chrome)\" --output dist-export/webmcp-biznaga-2026.pdf",
+    "export:pptx": "mkdir -p dist-export && slidev export --format pptx --executable-path \"$(command -v google-chrome)\" --output dist-export/webmcp-biznaga-2026.pptx",
+    "export:png": "mkdir -p dist-export && slidev export --format png --executable-path \"$(command -v google-chrome)\" --output dist-export/png"
+  },
+  "devDependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/press-start-2p": "^5.3.0",
+    "@fontsource/rajdhani": "^5.3.0",
+    "@slidev/cli": "^53.0.0",
+    "@slidev/theme-default": "^0.25.0",
+    "playwright-chromium": "^1.63.0"
+  }
+}
