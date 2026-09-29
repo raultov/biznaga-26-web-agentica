@@ -192,6 +192,15 @@
   max-height: 300px;
 }
 
+.slidev-layout.two-columns .col-right video {
+  max-height: 340px;
+  max-width: 100%;
+  border: 1px solid var(--bz-border);
+  border-radius: 6px;
+  box-shadow: 6px 6px 0 var(--bz-border);
+}
+
+
 /* Wider right column for slides whose screenshot must stay readable. */
 .slidev-layout.two-columns.bz-wide-right {
   grid-template-columns: 2fr 3fr;
@@ -200,6 +209,21 @@
 
 .slidev-layout.two-columns.bz-wide-right li {
   font-size: 1.05rem;
+}
+
+/* Wider left column for text-heavy slides with a small media on the right. */
+.slidev-layout.two-columns.bz-wide-left {
+  grid-template-columns: 3fr 2fr;
+  column-gap: 1.5rem;
+}
+
+/* The title may run over the right column: the media there is vertically centered. */
+.slidev-layout.two-columns.bz-wide-left h1 {
+  white-space: nowrap;
+}
+
+.slidev-layout.two-columns.bz-wide-left .col-left {
+  min-width: 0;
 }
 
 /* ---------- Tables ---------- */

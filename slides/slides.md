@@ -35,28 +35,41 @@ Introducción, Utilidades y Retos de Web-MCP
 # Player 1
 
 - Raúl Tovar, Senior Software Engineer en **The Workshop**
-- Autor de **Knot**: indexador de código + servidor MCP
-- knot.kz implementa WebMCP en producción: será nuestro campo de pruebas
+- Backend y frontend: me interesa todo lo que pasa entre la base de datos y el navegador
+- Laboratorio de esta charla: **knot.kz**, un side-project donde pruebo WebMCP en producción
 
 <!--
 [0:30] 30 segundos máximo. Lo importante: hablo desde las trincheras, no desde el spec.
+knot.kz no se vende: es el sitio donde experimento. Se menciona aquí porque todos los ejemplos
+de código y la demo salen de él, y el primero aparece ya en la slide de document.modelContext.
 TODO: foto, redes, QR a las slides.
 -->
 
 ---
+layout: two-cols
+layoutClass: bz-wide-left
+---
 
 # La web está hecha para humanos
 
-- Los agentes hoy navegan como tú: **capturas de pantalla**, clics y DOM
+- Los agentes usan la interfaz pensada para ti: la leen a base de **capturas de pantalla** y DOM
 - Frágil: un cambio de CSS rompe al agente
 - Caro: miles de tokens para "leer" una página
 - Ciego: no sabe qué hace un botón hasta que lo pulsa
 
 > ¿Y si la página pudiera decirle al agente qué sabe hacer?
 
+::right::
+
+<SlidevVideo v-click autoplay autoreset="slide" loop muted playsinline>
+  <source src="/videos/datepicker-hell.mp4" type="video/mp4" />
+</SlidevVideo>
+
 <!--
 [1:00] Hook. Pregunta al público: ¿quién ha visto a un agente pelearse con un datepicker?
-TODO: GIF/vídeo corto de un agente haciendo "computer use" torpemente.
+[CLICK] aparece y arranca el vídeo (4 s en bucle, sin audio); otro click pasa de slide. El datepicker "orbital", la Tierra gira alrededor del Sol para elegir la fecha.
+Es UX pensada (mal) para humanos: ahora imagina a un agente resolviéndolo a base de capturas y clics.
+Migración a Google Slides/PowerPoint: insertar public/videos/datepicker-hell.mp4 con reproducción automática y en bucle.
 -->
 
 ---
