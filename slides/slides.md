@@ -92,11 +92,21 @@ De MCP a Web-MCP
 - **Model Context Protocol**: estándar abierto para conectar LLMs con herramientas
 - Arquitectura *host → client → server*
 - El servidor expone **tools**, *resources* y *prompts*
-- Vive en el backend: stdio o HTTP, credenciales propias
+- Se comunica por stdio (proceso local) o HTTP (servicio remoto)
+- Spec actual **2026-07-28**: **sin estado**, cada petición se describe a sí misma
 
 <!--
 [3:30] Solo lo justo. Mucha gente ya lo conoce: preguntar a mano alzada.
-Spec vigente: 2026-07-28 (stateless, server/discover). knot.kz/mcp habla esa versión y las legacy.
+
+**Host** = tu CLI (opencode). **Client** = el conector que crea por cada servidor de su config. **Server** = knot-site (www.knot.kz/mcp).
+
+La mayoría de servidores MCP que usa la gente **solo exponen tools** (WebMCP, directamente, solo tiene tools).
+
+Si necesita **credenciales**, se las das tú al configurarlo (token, OAuth), nunca usa tu sesión del navegador.
+
+2026-07-28: **Antes** el cliente abría una sesión con el servidor y la mantenía. **Ahora** no hay sesión,
+cada petición llega sola y completa.
+
 -->
 
 ---
