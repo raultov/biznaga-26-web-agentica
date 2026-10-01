@@ -115,16 +115,22 @@ cada petición llega sola y completa.
 
 - La web publica sus tools **desde el frontend**, con JavaScript o con HTML
 - El navegador media cada llamada: la tool corre en la página, **con la sesión del usuario**
-- Sin backend nuevo, sin API keys, sin OAuth extra
+- El agente no puede hacer nada que el usuario no pueda
 - *Draft* del *W3C Web Machine Learning Community Group* (Microsoft + Google)
 
 > "Instead of your application being a guest within an agent, the agent is a guest on your platform."
 
 <!--
-[5:00] Idea clave: el agente trabaja DENTRO de la pestaña del usuario, con su sesión.
-Explainer publicado el 13-08-2025 por Microsoft (Walderman, Lee, Nolan) y Google (Bokan, Sagar, Van Opstal);
-hoy lo empuja Dominic Farolino. No está en el Standards Track del W3C.
-Cita: developer.chrome.com/docs/ai/webmcp/compare-mcp
+[5:00] Idea clave: el agente puede estar dentro del navegador (Leo en Brave) o fuera (opencode vía chrome-debug),
+pero la TOOL siempre se ejecuta DENTRO de la pestaña, con la sesión del usuario.
+
+**Media**: el agente no habla con la página, se lo pide al navegador, que ejecuta la tool y le devuelve el resultado.
+**Con la sesión del usuario**: la tool es JS de la web, usa sus cookies y su estado; el agente nunca ve los tokens.
+
+Microsoft y Google empujan este proyecto. No está en el Standards Track del W3C.
+Estado comprobado el 01-10-2026: Draft Community Group Report, última edición 30-09-2026.
+
+El agente entra en tu web y juega con tus reglas.
 -->
 
 ---
@@ -142,8 +148,10 @@ Cita: developer.chrome.com/docs/ai/webmcp/compare-mcp
 <!--
 [6:00] Fuente: github.com/webmachinelearning/webmcp/blob/main/implementation-status.md (27-09-2026).
 NO está activo por defecto en Chrome estable: hace falta origin trial o flag.
-Frameworks: webmcp-types (tipos TS), usewebmcp (React, experimental), Angular (experimental, Signal Forms → tools).
-Solo en documentos con origin isolation; Permissions Policy "tools" (allow="tools" en iframes cross-origin).
+
+**Origin trial**: la web registra su dominio, recibe un token y la API funciona para sus visitantes en Chrome normal.
+knot.kz lo tiene desde el 01-10-2026 (caduca el 30-03-2027).
+Edge tiene su propio origin trial: el token de Chrome no sirve allí.
 -->
 
 ---
@@ -317,10 +325,12 @@ layoutClass: bz-wide-right
 
 # Herramientas
 
-- Flag `#enable-webmcp-testing` u *origin trial* (Chrome 149+)
+- **Desarrollo**: flag · **Usuarios**: *origin trial*
 - **DevTools**: listar, inspeccionar y ejecutar tools
 - *Model Context Tool Inspector*: chatea con tus tools
 - **chrome-debug**: conecta cualquier agente MCP con las tools de una pestaña
+
+> Pruébalo: knot.kz → F12 → Application → WebMCP
 
 ::right::
 
@@ -328,6 +338,8 @@ layoutClass: bz-wide-right
 
 <!--
 [18:00] Transición a la demo.
+Desarrollo: flag #enable-webmcp-testing (en tu navegador). Usuarios: origin trial (token en tu web).
+Invitar al público a probarlo: knot.kz tiene origin trial, funciona en su Chrome 149+ sin tocar flags.
 Captura: panel WebMCP de DevTools en knot.kz (6 tools, detalle de get-latest-releases con Flags y Run Tool).
 Fíjate en "Origin: index-*.js:19": DevTools enlaza cada tool con la línea que la registró.
 Model Context Tool Inspector: extensión oficial de Chrome; manda los prompts a gemini-3-flash-preview.
