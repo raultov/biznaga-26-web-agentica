@@ -73,6 +73,33 @@ Migración a Google Slides/PowerPoint: insertar public/videos/datepicker-hell.mp
 -->
 
 ---
+layout: two-cols
+layoutClass: bz-links bz-coin
+---
+
+# Insert coin
+
+## 1 crédito: lo que traes
+
+- **HTML y JavaScript/TypeScript** básicos: formularios, `async`/promesas y JSON
+- Haber usado un **asistente de IA** (ChatGPT, Claude, Copilot…)
+- Un **navegador**, a nivel de usuario
+
+::right::
+
+## Free play: lo que no necesitas
+
+- Saber **MCP**: lo vemos en la Round 1
+- Un **framework** concreto: Angular, React, Vue o JS a secas
+- Saber cómo funciona un **LLM** por dentro
+
+<!--
+[2:30] 30 segundos. No es un filtro: es para que nadie se asuste con el código que viene.
+
+Si has usado un chatbot y sabes qué es un formulario, tienes crédito suficiente.
+-->
+
+---
 layout: section
 round: ROUND 1
 ---
@@ -142,16 +169,19 @@ El agente entra en tu web y juega con tus reglas.
 | Chrome | *Origin trial* desde **149** · flag `#enable-webmcp-testing` |
 | Edge | *Origin trial* desde **150** |
 | Brave | Experimental en Leo AI |
-| ChatGPT Desktop | Soportado |
-| Firefox · Safari | *Standards position* abierta |
+| Firefox | Postura **neutral** · sin implementar |
+| Safari | **En contra** |
 
 <!--
-[6:00] Fuente: github.com/webmachinelearning/webmcp/blob/main/implementation-status.md (27-09-2026).
-NO está activo por defecto en Chrome estable: hace falta origin trial o flag.
+[6:30] NO está activo por defecto en Chrome estable: hace falta origin trial o flag.
 
-**Origin trial**: la web registra su dominio, recibe un token y la API funciona para sus visitantes en Chrome normal.
-knot.kz lo tiene desde el 01-10-2026 (caduca el 30-03-2027).
+**Origin trial**: knot.kz registra su dominio, recibe un token y la API funciona para sus visitantes en Chrome normal.
+lo tiene desde el 01-10-2026 (caduca el 30-03-2027).
 Edge tiene su propio origin trial: el token de Chrome no sirve allí.
+
+**Firefox**: neutral; ven valor, pero temen webs que engañen al agente. Prototipo empezado, sin fecha.
+
+**Safari**: en contra; el agente debe usar la web como el humano (HTML), sin una capa aparte solo para él.
 -->
 
 ---
@@ -160,49 +190,17 @@ Edge tiene su propio origin trial: el token de Chrome no sirve allí.
 
 | | MCP | Web-MCP |
 | --- | --- | --- |
-| Dónde vive | Backend | Frontend, en la pestaña |
-| Ciclo de vida | Persistente | **Efímero: muere con la pestaña** |
-| Sesión | Credenciales propias | La del usuario |
-| Descubrimiento | Registro en cada agente | Al visitar la página |
-| Interfaz | Headless | Integrado en el DOM |
+| Dónde vive | Fuera del navegador | Dentro de la pestaña |
+| Ciclo de vida | Mientras el servidor MCP esté en marcha | **Mientras la pestaña esté abierta** |
+| Descubrimiento | Requiere configuración en tu cliente | Basta con abrir la página |
+| El usuario ve | Solo la respuesta del agente | La página cambiando en directo |
 
 > "WebMCP is not an extension or a replacement of MCP."
 
 <!--
-[6:45] Tabla oficial resumida de developer.chrome.com/docs/ai/webmcp/compare-mcp.
-Analogía de Chrome: MCP es el call center, WebMCP el experto en la tienda.
-"The most effective agentic applications use both MCP and WebMCP." → lo demostramos en Round 3 con knot.kz.
+[7:30] De hecho, Las aplicaciones agénticas más eficaces usan MCP y WebMCP a la vez. → knot.kz tiene las dos y en la demo usamos ambas.
+
 Web-MCP no tiene resources ni prompts: solo tools.
--->
-
----
-
-# `document.modelContext`
-
-```js
-const controller = new AbortController()
-
-await document.modelContext.registerTool({
-  name: 'get-latest-releases',
-  description: 'Returns the latest releases of Knot and Knot Server...',
-  inputSchema: {
-    type: 'object',
-    properties: { limit: { type: 'number', minimum: 1, maximum: 4 } },
-  },
-  annotations: { readOnlyHint: true, untrustedContentHint: true },
-  async execute({ limit = 3 }, { signal }) {
-    return { content: [{ type: 'text', text: JSON.stringify(await releases(limit)) }] }
-  },
-}, { signal: controller.signal })   // controller.abort() → desregistra
-```
-
-<!--
-[7:00] Tools estrictamente tipadas con JSON Schema.
-Verificado en Chrome 153 (27-09-2026): solo existe document.modelContext
-(navigator.modelContext ya no existe). Miembros: registerTool, getTools, executeTool, ontoolchange.
-No hay unregisterTool: se desregistra abortando la señal. registerTool devuelve una Promise.
-El abstract habla de navigator.modelContext: contarlo como prueba de lo rápido que cambia el spec.
-Fuente: src/webmcp/useWebMcp.ts y src/toolcore/definitions/getLatestReleases.ts de knot-site.
 -->
 
 ---
@@ -215,14 +213,64 @@ round: ROUND 2
 Dos APIs, un mismo objetivo
 
 <!--
-[11:00]
+[8:30]
+-->
+
+---
+class: bz-code-compact
+---
+
+# API imperativa
+
+```js {1-2|4-8|10-16|18-20|all}
+// 1. Lo que el agente puede mandar
+const inputSchema = { type: 'object', properties: { limit: { type: 'number', minimum: 1, maximum: 4 } } }
+
+// 2. Lo que se ejecuta en la página
+async function execute(input) {
+  const data = await releases(input.limit ?? 3)   // código que la web ya tenía
+  return { content: [{ type: 'text', text: JSON.stringify(data) }] }
+}
+
+// 3. La tool completa
+const tool = {
+  name: 'get-latest-releases',
+  description: 'Returns the latest releases of Knot and Knot Server...',
+  annotations: { readOnlyHint: true, untrustedContentHint: true },
+  inputSchema, execute,
+}
+
+// 4. Registrarla; controller.abort() la quita
+const controller = new AbortController()
+await document.modelContext.registerTool(tool, { signal: controller.signal })
+```
+
+<!--
+[8:45] 
+
+1: input schema, qué puede mandar el agente. 
+
+[CLICK] 2: execute, el código de siempre de la web.
+
+[CLICK] 3: nombre, descripción y anotaciones, lo que lee el modelo. 
+
+[CLICK] 4: registrar; abort() la quita. [CLICK] todo.
+
+Verificado en Chrome 153 (27-09-2026): solo existe document.modelContext
+(navigator.modelContext ya no existe). 
+
+Miembros: registerTool, getTools, executeTool, ontoolchange.
+
+No hay unregisterTool: se desregistra abortando la señal. registerTool devuelve una Promise.
+
+El abstract habla de navigator.modelContext: contarlo como prueba de lo rápido que cambia el spec.
 -->
 
 ---
 
 # API declarativa: formularios en segundos
 
-```html
+```html {1-2|4-7|3,8|all}
 <form toolname="contact-knot-team"
       tooldescription="Send a message to the Knot maintainers..."
       action="/api/contact" method="post">
@@ -238,47 +286,60 @@ Dos APIs, un mismo objetivo
 - Sin `toolautosubmit`: el agente rellena, **el humano pulsa Send**
 
 <!--
-[11:30] Verificado en knot.kz (src/components/Contact.tsx) y en vivo con chrome-debug:
-- <select> → enum + anyOf con los textos de cada <option> como title
+[11:00]
+
+1: toolname + tooldescription, lo que lee el modelo (como el bloque 3 de la imperativa).
+
+[CLICK] 2: los campos; el navegador genera el JSON Schema solo (required → required, `<select>` → enum).
+
+[CLICK] 3: action + botón; no hay execute: ejecutar es enviar el formulario, y lo envía el humano.
+
+[CLICK] todo. Sin registerTool ni abort(): la tool existe mientras el formulario esté en la página.
+
+Verificado en knot.kz (src/components/Contact.tsx) y en vivo con chrome-debug:
+- `<select>` → enum + anyOf con los textos de cada `<option>` como title
 - required del HTML → required del schema
-- El honeypot (company_website) TAMBIÉN entra en el schema: Chrome incluye todo input no hidden.
-- La invocación queda Pending hasta que el humano envía; si la página recarga, se queda Pending para siempre.
+- El agente se queda esperando (Pending) hasta que el humano envía; si la página navega, recibe el JSON-LD de la página nueva.
 - CSS: :tool-form-active y :tool-submit-active para resaltar el formulario mientras lo usa el agente.
 Según Chrome (docs/ai/webmcp/declarative-api):
-- Sin toolparamdescription, el navegador usa el texto del <label> y después aria-description.
+- Sin toolparamdescription, el navegador usa el texto del `<label>` y después aria-description.
 - toolautosubmit → el agente envía y navega. SubmitEvent.agentInvoked + respondWith() (tras preventDefault) devuelven un resultado al modelo.
 - Eventos toolactivated / toolcancel (el explainer los llama toolcanceled: aún no está cerrado).
 - toolparamtitle, que usa knot.kz, no aparece en la documentación oficial.
 - El algoritmo de generación del schema es TBD en el explainer: lo que vemos es el comportamiento de Chromium.
+
+Probado en knot.kz (Chrome 153, 03-10-2026):
+- agentInvoked es true si el agente rellenó, aunque el humano pulse Send.
+- preventDefault() sin respondWith() → Chrome da la invocación por error ("The site has a programming error").
+- Con respondWith() el agente recibe exactamente lo que devuelve la página.
 -->
 
 ---
 
-# API imperativa: un hook de React
+# ¿Y mi framework?
 
-```tsx
-export function useWebMcp(tools: readonly WebMcpTool[]) {
-  useEffect(() => {
-    const mc = document.modelContext
-    if (!mc) return                  // mejora progresiva: sin API, la web sigue igual
+| Framework | Soporte |
+| --- | --- |
+| Angular | **Oficial**, experimental desde **v22** · Signal Forms → tool |
+| React | Sin soporte oficial · comunidad: `usewebmcp` |
+| Vue / Nuxt | Comunidad: `vue-webmcp`, `nuxt-webmcp` |
+| Cualquiera | Polyfill y tipos: `@mcp-b/global`, `webmcp-types` |
+| Sin código | **Cloudflare** (beta): un interruptor en el CDN inyecta las tools |
 
-    const controller = new AbortController()
-    for (const tool of tools) mc.registerTool(tool, { signal: controller.signal })
-
-    return () => controller.abort()  // desmontar = desregistrar
-  }, [tools])
-}
-```
-
-- La tool llama al **mismo caso de uso** que la UI
-- En Vue: lo mismo con `onMounted` / `onUnmounted`
+> knot.kz: **sin librerías**, un hook de ~70 líneas. Una librería no te ahorra código: te aísla de los **cambios de la spec**.
 
 <!--
-[13:30] Simplificado de knot-site/src/webmcp/useWebMcp.ts (el real ignora AbortError de StrictMode
-y soporta registerTool síncrono o con Promise).
-Alternativas: usewebmcp (React, experimental) y soporte experimental en Angular.
-execute recibe (input, { signal }) para cancelar. Desde Chrome 153 se puede desregistrar sin romper
-ejecuciones en curso. Chrome 155 depreca los argumentos como string JSON.
+[13:00] Angular es el único con soporte **oficial**: desde la v22, en experimental. Puede cambiar incluso en versiones menores.
+Tú no tocas `document.modelContext`: si el navegador cambia, lo absorbe Angular.
+
+React y Vue: solo librerías de la **comunidad**.
+
+knot.kz no usa ninguna: la API es una función y una señal de cancelación.
+Lo que te da una librería es que **otro** sigue los cambios de la spec por ti.
+
+**Cloudflare** (beta desde el 06-08-2026): activas WebMCP en el panel y su CDN añade a cada HTML una línea `<script src="/.webmcp/bridge.js">`. Ese script registra las tools en la página. Tu código no cambia.
+
+Hoy hay dos packs. **Content Credentials**: lee los metadatos C2PA de tus imágenes (autor, herramienta, si es IA) para que el agente responda "¿esta foto es real?". No verifica la firma, y casi ninguna imagen de la web los lleva. **Site MCP server**: convierte las tools de tu `/mcp` en tools WebMCP; cada llamada va a tu servidor con la cookie del usuario, sin OAuth. Todo se ejecuta en el navegador del visitante.
 -->
 
 ---
@@ -307,20 +368,18 @@ layout: two-cols
 ```
 
 <!--
-[15:30] Estas flags son el contrato de confianza entre página y agente.
-Salida real de document.modelContext.getTools() capturada el 27-09-2026 (recortada).
-Captura de DevTools de respaldo: public/images/flags-knot-readonly.png
-Verificado en Chrome 153: getTools() devuelve readOnlyHint / untrustedContentHint; DevTools y CDP
-las muestran como readOnly / untrustedContent (de ahí la captura).
-consequentialHint está documentado, pero en Chrome 153 no llega al agente (knot.kz lo declara en copy-install-command).
-Chrome 156 añade la anotación debugging.
-El consentimiento no lo da el navegador: requestUserInteraction() está en el draft pero no en Chrome 153.
-En knot.kz es un modal propio (ConsentModal): "the modal is the entire trust boundary".
+[14:30] Estas flags son el contrato de confianza entre página y agente.
+
+consequentialHint está documentado, pero en Chrome 153 aun no llega al agente (knot.kz lo declara en copy-install-command).
+
+Chrome 156 añade la anotación debugging para desarrolladores y testing.
+
+Hoy el consentimiento lo pone la página (el ConsentModal de knot.kz). Lo que cambia es el motivo: el navegador no tiene ninguna API para pedirlo, ni siquiera en el draft.
 -->
 
 ---
 layout: two-cols
-layoutClass: bz-wide-right
+layoutClass: bz-wide-right bz-spotlight-last
 ---
 
 # Herramientas
@@ -328,7 +387,7 @@ layoutClass: bz-wide-right
 - **Desarrollo**: flag · **Usuarios**: *origin trial*
 - **DevTools**: listar, inspeccionar y ejecutar tools
 - *Model Context Tool Inspector*: chatea con tus tools
-- **chrome-debug**: conecta cualquier agente MCP con las tools de una pestaña
+- **chrome-devtools-mcp**, **Playwright MCP** y **chrome-debug**: conectan cualquier agente MCP con las tools de una pestaña
 
 > Pruébalo: knot.kz → F12 → Application → WebMCP
 
@@ -337,14 +396,17 @@ layoutClass: bz-wide-right
 ![Panel WebMCP de DevTools en knot.kz](/images/devtools-webmcp-panel.png)
 
 <!--
-[18:00] Transición a la demo.
+[16:00] Transición a la demo.
 Desarrollo: flag #enable-webmcp-testing (en tu navegador). Usuarios: origin trial (token en tu web).
 Invitar al público a probarlo: knot.kz tiene origin trial, funciona en su Chrome 149+ sin tocar flags.
+
 Captura: panel WebMCP de DevTools en knot.kz (6 tools, detalle de get-latest-releases con Flags y Run Tool).
 Fíjate en "Origin: index-*.js:19": DevTools enlaza cada tool con la línea que la registró.
-Model Context Tool Inspector: extensión oficial de Chrome; manda los prompts a gemini-3-flash-preview.
-chrome-debug es mío: github.com/raultov/chrome-debug-mcp (open_instance con features WEB_MCP,
-webmcp_list_tools, webmcp_invoke_tool, webmcp_get_invocation).
+
+Model Context Tool Inspector: extensión de François Beaufort (equipo de Chrome), no es producto oficial de Google. Lista y ejecuta tools, y chatea con ellas con tu API key de Gemini (por defecto gemini-3.6-flash). Requiere el flag.
+
+chrome-devtools-mcp: WebMCP tras el flag --categoryExperimentalWebmcp. Playwright MCP: activado por defecto.
+En la demo uso **chrome-debug**, un MCP mío más ligero que estos dos: github.com/raultov/chrome-debug-mcp. Invitar a probarlo.
 -->
 
 ---
@@ -357,28 +419,38 @@ round: BONUS STAGE
 Player 2 has entered the game
 
 <!--
-[20:00] Si algo falla: vídeo de respaldo (TODO: ruta del vídeo).
+[17:30] Si algo falla: vídeo de respaldo (TODO: ruta del vídeo).
 -->
 
 ---
 
 # Lo que vamos a ver
 
-- Las tools de **knot.kz** en DevTools
-- Un agente con **chrome-debug** descubre y ejecuta las tools de la pestaña
-- Una tool que exige tu permiso y un formulario que solo tú puedes enviar
-- El mismo sitio por MCP clásico: qué cruza y qué no
+Misma pregunta, tres caminos: *¿qué lenguajes soporta knot?*
+
+1. **Leo** en Brave: el agente está **dentro** del navegador
+2. **opencode + chrome-debug**: el agente está **fuera**, la tool corre en la pestaña
+3. **opencode + knot-site**: MCP clásico, knot.kz ni se abre
 
 <!--
-[20:30] Guion de la demo (agente instruido con PROMPT.md):
-1. open_instance WEB_MCP + navigate https://www.knot.kz → webmcp_list_tools: 6 tools
-2. webmcp_invoke_tool get-latest-releases {"product":"knot","limit":2} (readOnly + untrustedContent)
-3. webmcp_invoke_tool copy-install-command → modal "An agent needs your permission" → Pending →
-   el público decide Allow/Deny → webmcp_get_invocation
-4. navigate /#/contact → 7 tools → contact-knot-team rellena el formulario, NO lo envía
-5. MCP clásico del mismo sitio: opencode.json → "knot-site": { "type": "remote", "url": "https://www.knot.kz/mcp" }
-   opencode mcp list → solo 4 tools (las portables)
-   Prompt: "¿qué lenguajes soporta el indexador de knot? usa knot-site"
+[18:00] Del más integrado al menos integrado. Cierra con la cita: en 1 y 2 el agente es el invitado; en 3, tu web.
+
+**1. Leo** (Brave con brave://flags/#enable-webmcp-testing, modelo fijado: Qwen 3.5 35B; si no está, vídeo)
+www.knot.kz → abrir Leo → tools pill (6 tools) → "usa las tools para decirme qué lenguajes soporta knot"
+→ Security warning de Brave (Allow) → list-supported-languages → 15 lenguajes.
+Después, "ejecuta copy_install_command" → DOBLE consentimiento, cada uno de un actor:
+  1. Brave (el navegador media): "Brave AI would like to execute copy-install-command" → Allow
+  2. knot.kz (la web pone sus reglas): "An agent needs your permission" → Allow → copiado.
+Brave muestra su Security warning en CADA ejecución, aunque se repita la tool (salvo "Allow always" en la tools pill).
+Señalar el nombre en "Task complete": web_www_knot_kz_copy_install_command. Brave añade el origen como prefijo.
+
+**2. opencode + chrome-debug** (instruido con PROMPT.md)
+open_instance + navigate www.knot.kz → webmcp_list_tools: 6 tools → misma pregunta
+→ navigate /#/contact → 7 tools → contact-knot-team rellena el formulario, NO lo envía (Pending hasta que pulso Send).
+
+**3. opencode + knot-site** ("knot-site": { "type": "remote", "url": "https://www.knot.kz/mcp" })
+"¿qué lenguajes soporta el indexador de knot? usa knot-site" → respuesta en el terminal.
+Solo 4 tools: copy-install-command, get-install-command y contact-knot-team no cruzan.
 -->
 
 ---
@@ -395,15 +467,29 @@ Hablando desde las trincheras
 -->
 
 ---
+class: bz-examples
+---
 
 # Refactorizar para desacoplar
 
-- La lógica atrapada en componentes no se puede exponer
+- Lógica y estado **fuera del framework**: la UI y la tool usan el mismo código
+  - <v-click><code>addToCart</code> dentro de un <code>onClick</code>: llévalo a un modelo independiente del framework</v-click>
 - Una tool es un **caso de uso**, no un botón
-- Stores y servicios compartidos entre UI y agente
+  - <v-click><code>checkout(...)</code>, no "pulsa Siguiente" tres veces</v-click>
+- Las **reglas**, en el modelo: la tool no pasa por tus botones ni formularios
+  - <v-click>Un botón "Comprar" deshabilitado sin stock no frena a la tool</v-click>
 
 <!--
-[28:30] Ejemplo knot.kz: installationStore + scrollToInstall.
+[28:30] **Fuera del framework**: execute no es un onClick, solo puede llamar a funciones normales.
+[CLICK] Saca lógica y estado a TS puro: el botón y la tool llaman a lo mismo.
+En knot.kz, la pestaña activa: la tool la cambia y React repinta.
+
+**Caso de uso**: expón lo que el usuario quiere conseguir, no sus clics.
+[CLICK] En knot.kz: get-install-command, y además calcula el docker run con tus núcleos y RAM. Más que cualquier botón.
+
+**Reglas en el modelo**: lo que la UI impide sin decirlo, la tool no lo ve.
+[CLICK] Ni un botón deshabilitado ni un required del formulario frenan al agente: comprueba en el modelo.
+En knot.kz, get-install-command valida núcleos y RAM dentro de la tool.
 -->
 
 ---
@@ -412,33 +498,48 @@ Hablando desde las trincheras
 
 - Sin pestaña abierta, **no hay tools**
 - Cada ruta publica sus tools: knot.kz tiene 6 en la portada y 7 en `/#/contact`
-- Si la página navega a mitad de una llamada, **la respuesta se pierde**
+- Formulario declarativo sin `respondWith()`: al navegar, el agente recibe **el JSON-LD de la página nueva**
 - Sesión del usuario = poder del usuario
 
 > "WebMCP tools are ephemeral. They exist only when your page is open."
 
 <!--
-[30:30] Verificado en vivo: una invocación del formulario queda Pending y, tras recargar, sigue
-Pending para siempre. Es el issue abierto #135 del explainer ("cross-document tool response").
+[30:30] Probado en Chrome 153 (04-10-2026): si la tool navega o recarga, su return se pierde.
+El agente recibe los `<script type="application/ld+json">` de la página nueva, o [] si no hay.
+
+**JSON-LD**: datos estructurados (schema.org) ocultos en el HTML; hasta ahora, para SEO.
+
+Por eso knot.kz usa respondWith() + fetch: sin él, el agente leería el JSON-LD de la portada, no "Message sent".
+Con respondWith(), si la página navega antes de resolver la promesa, el agente se queda esperando: ni tu respuesta ni el JSON-LD.
+
+Issue abierto #135 del explainer. Propuesta: continuation tokens (la tool sigue en la página siguiente), aún no en Chrome.
 executeTool() devuelve null cuando la tool provoca una navegación.
-Propuesta en estudio: tools en Service Workers para sitios que no están abiertos.
 -->
 
 ---
 
 # Costes y abusos
 
-- Cada tool ocupa **contexto** del modelo en cada turno
-- Presupuestos de Chrome: **30** caracteres el nombre, **500** la descripción, **150** cada parámetro, **1.500** la respuesta
-- *Rate limiting* y bots: tu web se convierte en una API
-- Menos tools, mejor descritas: *validate strictly in code, loosely in schema*
+- Cada tool ocupa **contexto** del modelo en cada llamada: las 7 de knot.kz son **~1.000 tokens**
+- Presupuestos **recomendados** por Chrome (no los aplica): **30** el nombre, **500** la descripción, **150** cada parámetro, **1.500** la respuesta
+- *Rate limiting* y bots: tus tools son una **API documentada**, que se puede usar sin LLM
+- Menos tools, mejor descritas: *validate strictly in code, loosely in schema*. Chrome **no valida** el schema
 
 <!--
-[32:00] "While there isn't a maximum number of tools allowed, each tool takes up part of the context window."
-(docs/ai/webmcp/best-practices). Los límites están en docs/ai/webmcp/secure-tools y "subject to change".
+[32:00] 
+
+El modelo no recuerda nada: en cada llamada se le reenvía el catálogo entero de tools. Una tarea de 3 pasos en knot.kz son unos 3.000 tokens solo en releer el menú. Y al navegar el catálogo cambia, así que la caché ayuda menos.
+Ninguna guía oficial habla de coste económico: es un reto abierto.
+
+Probado en Chrome 153: acepta un nombre de 60 caracteres y una respuesta de 5.000 sin quejarse. Si te pasas, el problema aparece en el agente, no en el navegador. En knot.kz la descripción más larga usa la mitad del presupuesto; lo que va justo son las respuestas (1.321 de 1.500).
+
 knot.kz lo vigila en CI: scripts/webmcp-budget.mjs falla el build si una tool supera el presupuesto
 (objetivo propio: 1.350 caracteres de salida, el 90 % del límite).
-Ninguna guía oficial habla de coste económico: es un reto abierto.
+
+Un script con Chrome y CDP puede invocarlas sin modelo. En knot.kz solo contact cuesta dinero: honeypot, validación en servidor y rate limit en Cloudflare.
+
+knot.kz agrupa 5 combinaciones en get-install-command, pero separa copy-install-command porque pide consentimiento.
+El schema orienta al modelo; la validación real va en tu código, con errores que digan qué valores valen para que el modelo se corrija.
 -->
 
 ---
@@ -452,6 +553,7 @@ Ninguna guía oficial habla de coste económico: es un reto abierto.
 
 - Sin `untrustedContentHint`, el agente trata la salida como fiable
 - Un manifiesto C2PA manipulado → **prompt injection**
+- Lo reporté a Cloudflare. Respuesta automática: *"We are no longer accepting emails at this address"*
 
 > "It's impossible to guarantee safety inside of a large language model."
 
@@ -459,12 +561,13 @@ Ninguna guía oficial habla de coste económico: es un reto abierto.
 [34:00] Datos sacados del panel WebMCP de DevTools (capturas de respaldo:
 public/images/flags-knot-readonly.png y public/images/flags-c2pa-missing.png).
 En la de Cloudflare no aparece ni la fila "Flags".
+
 Contexto: Cloudflare lanzó la developer preview el 06-08-2026 (blog.cloudflare.com/webmcp). Inyecta
 /.webmcp/bridge.js en el edge con packs "c2pa" y "mcp-server-client".
 Su propia defensa: cada resultado lleva signatureVerified: false. Eso protege de confiar en la firma,
 NO de las instrucciones escondidas en title, claim o assertions.
 Los hints valen false por defecto: no declarar = declarar que es contenido fiable.
-Cita: docs/ai/webmcp/secure-tools. Observado en septiembre de 2026. TODO: comprobar si ya lo han corregido.
+Cita: docs/ai/webmcp/secure-tools. Observado en septiembre de 2026.
 -->
 
 ---
@@ -476,11 +579,13 @@ Cita: docs/ai/webmcp/secure-tools. Observado en septiembre de 2026. TODO: compro
 - Chrome: `InvalidStateError: Duplicate tool name`
 - **Gana quien registre primero**, y el otro falla
 
+![Panel WebMCP de Cloudflare: packs Content Credentials (C2PA) y Site MCP server](/images/cloudflare-webmcp-packs.png)
+
 <!--
 [35:30] Verificado en vivo en knot.kz (Chrome 153): registrar otra "list-supported-languages" lanza
 InvalidStateError "Duplicate tool name". Las 4 tools portables de knot.kz están a la vez en la página
 y en /mcp: con el pack mcp-server-client activado habría una carrera entre el script del edge y el montaje de React.
-No he visto el código de bridge.js: no sé cómo gestiona el error. La conclusión: bridge O nativo, no los dos.
+bridge.js llama a registerTool sin await ni catch: cada nombre duplicado es un error sin capturar en la consola de cada visitante, y quién gana depende de una carrera. La conclusión: bridge O nativo, no los dos.
 -->
 
 ---
@@ -552,6 +657,37 @@ knot.kz descartó .well-known/webmcp.json a propósito: no hay estándar.
 
 <!--
 [42:00] Tres ideas para llevarse a casa.
+-->
+
+---
+layout: two-cols
+layoutClass: bz-links
+---
+
+# Recursos
+
+## Spec y documentación
+
+- **WebMCP**: [webmachinelearning.github.io/webmcp](https://webmachinelearning.github.io/webmcp/)
+- **Explainer e issues**: [github.com/webmachinelearning/webmcp](https://github.com/webmachinelearning/webmcp)
+- **Chrome**: [developer.chrome.com/docs/ai/webmcp](https://developer.chrome.com/docs/ai/webmcp)
+- **Chrome Status**: [chromestatus.com/feature/5117755740913664](https://chromestatus.com/feature/5117755740913664)
+- **MCP**: [modelcontextprotocol.io/specification/2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28)
+- **Angular**: [angular.dev/ai/webmcp](https://angular.dev/ai/webmcp)
+- **Cloudflare**: [blog.cloudflare.com/webmcp](https://blog.cloudflare.com/webmcp/)
+
+::right::
+
+## Herramientas
+
+- **knot.kz**: [www.knot.kz](https://www.knot.kz/)
+- **chrome-debug**: [github.com/raultov/chrome-debug-mcp](https://github.com/raultov/chrome-debug-mcp)
+- **chrome-devtools-mcp**: [github.com/ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp)
+- **Playwright MCP**: [github.com/microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp)
+- **Tool Inspector**: [github.com/beaufortfrancois/model-context-tool-inspector](https://github.com/beaufortfrancois/model-context-tool-inspector)
+
+<!--
+[42:45]
 -->
 
 ---

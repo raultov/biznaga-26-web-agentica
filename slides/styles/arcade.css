@@ -162,6 +162,16 @@
   line-height: 1.55;
 }
 
+/* Longer listings walked through step by step with line highlighting. */
+.slidev-layout.bz-code-compact pre.shiki {
+  padding: 0.7rem 1rem;
+}
+
+.slidev-layout.bz-code-compact pre.shiki code {
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+
 /* ---------- Images ---------- */
 .slidev-layout p > img {
   max-height: 240px;
@@ -224,6 +234,77 @@
 
 .slidev-layout.two-columns.bz-wide-left .col-left {
   min-width: 0;
+}
+
+/* One-line examples nested under each bullet, revealed click by click. */
+.slidev-layout.bz-examples ul ul {
+  margin: 0.2rem 0 0.9rem;
+}
+
+.slidev-layout.bz-examples ul ul > li {
+  font-size: 0.95rem;
+  color: var(--bz-muted);
+}
+
+.slidev-layout.bz-examples ul ul > li::before {
+  content: '→';
+  top: 0;
+  width: auto;
+  height: auto;
+  background: none;
+  box-shadow: none;
+  color: var(--bz-green);
+  transform: none;
+}
+
+/* Hide the arrow too while the example is still waiting for its click. */
+.slidev-layout.bz-examples ul ul > li:has(> .slidev-vclick-hidden)::before {
+  visibility: hidden;
+}
+
+/* Highlights the last bold term of the last bullet, e.g. the tool used in the upcoming demo. */
+.slidev-layout.bz-spotlight-last ul > li:last-child > strong:last-of-type {
+  color: var(--bz-green);
+}
+
+/* Resources slide: two compact link lists, aligned at the top. */
+.slidev-layout.two-columns.bz-links .col-right {
+  justify-content: flex-start;
+  align-items: stretch;
+  /* Aligns the right h2 with the left one, which sits below the slide h1. */
+  padding-top: 5.05rem;
+}
+
+.slidev-layout.two-columns.bz-links .col-left,
+.slidev-layout.two-columns.bz-links .col-right {
+  min-width: 0;
+}
+
+.slidev-layout.two-columns.bz-links h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.4rem;
+}
+
+.slidev-layout.two-columns.bz-links li {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin: 0.55rem 0;
+  overflow-wrap: anywhere;
+}
+
+/* Insert coin slide: what you bring vs. what you can skip (free play in green). */
+.slidev-layout.two-columns.bz-coin li {
+  font-size: 1.05rem;
+  margin: 0.8rem 0;
+}
+
+/* The right column is a flex item, so its first margin does not collapse like the left one. */
+.slidev-layout.two-columns.bz-coin li:first-child {
+  margin-top: 0;
+}
+
+.slidev-layout.two-columns.bz-coin .col-right h2 {
+  color: var(--bz-green);
 }
 
 /* ---------- Tables ---------- */
