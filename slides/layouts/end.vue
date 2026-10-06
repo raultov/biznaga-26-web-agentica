@@ -4,7 +4,6 @@
     <div class="bz-end-body">
       <slot />
     </div>
-    <div class="bz-eyebrow">Insert coin to ask a question</div>
   </div>
 </template>
 
@@ -32,5 +31,12 @@
 .bz-end-body :deep(h1)::after {
   margin-left: auto;
   margin-right: auto;
+}
+
+/* QR to the published slides: white quiet zone keeps it scannable on the dark theme. */
+.bz-end-body :deep(img) {
+  width: 8.5rem;
+  margin: 0.5rem auto;
+  image-rendering: pixelated;
 }
 </style>
