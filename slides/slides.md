@@ -172,7 +172,7 @@ El agente entra en tu web y juega con tus reglas.
 | --- | --- |
 | Chrome | *Origin trial* desde **149** · flag `#enable-webmcp-testing` |
 | Edge | *Origin trial* desde **150** |
-| Brave | Experimental en Leo AI |
+| Brave | Experimental en Leo AI · flag `#enable-webmcp-testing` |
 | Firefox | Postura **neutral** · sin implementar |
 | Safari | **En contra** |
 | ChatGPT (escritorio) | **Site tools** en su navegador integrado (agosto 2026) |
@@ -188,7 +188,10 @@ Edge tiene su propio origin trial: el token de Chrome no sirve allí.
 
 **Safari**: en contra; el agente debe usar la web como el humano (HTML), sin una capa aparte solo para él.
 
-OpenAI ya es cliente: ChatGPT de escritorio usa las tools WebMCP de la página que tienes abierta (no en Chrome, en su navegador integrado). Y Shopify ya las sirve: 10 tools de serie en todas sus tiendas Liquid.
+OpenAI ya es cliente: ChatGPT de escritorio usa las tools WebMCP de la página que tienes abierta (no en Chrome, en su navegador integrado).
+
+Shopify ya sirve tools Web-MCP en sus tiendas, sin que el comerciante toque nada. Plataformas como Shopify o Cloudflare
+son las que de verdad extienden la adopción: lo activan en todas sus webs de golpe.
 -->
 
 ---
@@ -198,8 +201,8 @@ OpenAI ya es cliente: ChatGPT de escritorio usa las tools WebMCP de la página q
 | | MCP | Web-MCP |
 | --- | --- | --- |
 | Dónde vive | Fuera del navegador | Dentro de la pestaña |
-| Ciclo de vida | Mientras el servidor MCP esté en marcha | **Mientras la pestaña esté abierta** |
-| Descubrimiento | Requiere configuración en tu cliente | Basta con abrir la página |
+| Duración | Mientras el servidor MCP esté en marcha | **Mientras la pestaña esté abierta** |
+| Configuración | Requiere configuración en tu cliente | Basta con abrir la página |
 | El usuario ve | Solo la respuesta del agente | La página cambiando en directo |
 
 > "WebMCP is not an extension or a replacement of MCP."
@@ -208,8 +211,12 @@ OpenAI ya es cliente: ChatGPT de escritorio usa las tools WebMCP de la página q
 [8:00] De hecho, las aplicaciones agénticas más eficaces usan MCP y WebMCP a la vez. → knot.kz tiene las dos y en la demo usamos ambas.
 
 Shopify también: WebMCP en todas sus tiendas para el agente del comprador, y servidores MCP para quien construye su propio agente.
+Cada tienda tiene su endpoint MCP (`/api/ucp/mcp`, protocolo UCP): catálogo, carrito, checkout y pedidos, sin navegador.
+Lo usa un asistente de compras de terceros, que se identifica con un perfil de agente; el checkout exige autenticar o firmar cada petición.
 
 Web-MCP no tiene resources ni prompts: solo tools.
+**Resources**: la página ya es el recurso.
+**Prompts**: los lanza el usuario desde la interfaz de su agente.
 -->
 
 ---
@@ -291,7 +298,7 @@ El abstract habla de navigator.modelContext: contarlo como prueba de lo rápido 
 </form>
 ```
 
-- Cero JavaScript: el navegador **genera el JSON Schema** desde el formulario
+- Sin JavaScript obligatorio: el navegador **genera el JSON Schema** desde el formulario
 - Sin `toolautosubmit`: el agente rellena, **el humano pulsa Send**
 
 <!--
@@ -304,6 +311,7 @@ El abstract habla de navigator.modelContext: contarlo como prueba de lo rápido 
 [CLICK] 3: action + botón; no hay execute: ejecutar es enviar el formulario, y lo envía el humano.
 
 [CLICK] todo. Sin registerTool ni abort(): la tool existe mientras el formulario esté en la página.
+El JS es opcional: `respondWith()` para devolver un resultado propio sin navegar. knot.kz lo usa.
 
 Verificado en knot.kz (src/components/Contact.tsx) y en vivo con chrome-debug:
 - `<select>` → enum + anyOf con los textos de cada `<option>` como title
@@ -333,7 +341,6 @@ Probado en knot.kz (Chrome 153, 03-10-2026):
 | React | Sin soporte oficial · comunidad: `usewebmcp` |
 | Vue / Nuxt | Comunidad: `vue-webmcp`, `nuxt-webmcp` |
 | Cualquiera | Polyfill y tipos: `@mcp-b/global`, `webmcp-types` |
-| Plataformas | **Shopify**: 10 tools de serie en toda tienda Liquid · **Cloudflare** (beta): un interruptor en el CDN |
 
 > knot.kz: **sin librerías**, un hook de ~70 líneas. Una librería no te ahorra código: te aísla de los **cambios de la spec**.
 
@@ -346,9 +353,8 @@ React y Vue: solo librerías de la **comunidad**.
 knot.kz no usa ninguna: la API es una función y una señal de cancelación.
 Lo que te da una librería es que **otro** sigue los cambios de la spec por ti.
 
-**Cloudflare** (beta desde el 06-08-2026): activas WebMCP en el panel y su CDN añade a cada HTML una línea `<script src="/.webmcp/bridge.js">`. Ese script registra las tools en la página. Tu código no cambia.
-
-Hoy hay dos packs. **Content Credentials**: lee los metadatos C2PA de tus imágenes (autor, herramienta, si es IA) para que el agente responda "¿esta foto es real?". No verifica la firma, y casi ninguna imagen de la web los lleva. **Site MCP server**: convierte las tools de tu `/mcp` en tools WebMCP; cada llamada va a tu servidor con la cookie del usuario, sin OAuth. Todo se ejecuta en el navegador del visitante.
+Con un **polyfill**, tus tools funcionan en cualquier navegador para clientes que ejecuten JavaScript en la página, como Playwright o una extensión.
+Pero se pierde la mediación del navegador: ese cliente tiene acceso a toda la página, no solo a tus tools.
 -->
 
 ---
@@ -377,11 +383,11 @@ layout: two-cols
 ```
 
 <!--
-[15:00] Estas flags son el contrato de confianza entre página y agente.
+[15:00] Estas flags son lo que la página **declara** al agente: el navegador las transmite, pero no las hace cumplir.
+El navegador controla quién llama a qué y desde dónde (solo HTTPS, tools ligadas a su origen); lo que la tool declara o hace es responsabilidad de la página.
+Si algo debe confirmarse, confírmalo en la tool.
 
 consequentialHint está documentado, pero en Chrome 153 aun no llega al agente (knot.kz lo declara en copy-install-command).
-
-Chrome 156 añade la anotación debugging para desarrolladores y testing.
 
 Hoy el consentimiento lo pone la página (el ConsentModal de knot.kz). Lo que cambia es el motivo: el navegador no tiene ninguna API para pedirlo, ni siquiera en el draft.
 -->
@@ -406,15 +412,15 @@ layoutClass: bz-wide-right bz-spotlight-last
 
 <!--
 [16:30] Transición a la demo.
-Desarrollo: flag #enable-webmcp-testing (en tu navegador). Usuarios: origin trial (token en tu web).
+
+**Desarrollo**: flag #enable-webmcp-testing (en tu navegador; también lo necesita el Model Context Tool Inspector). Usuarios: origin trial (token en tu web).
 Invitar al público a probarlo: knot.kz tiene origin trial, funciona en su Chrome 149+ sin tocar flags.
 
-Captura: panel WebMCP de DevTools en knot.kz (6 tools, detalle de get-latest-releases con Flags y Run Tool).
-Fíjate en "Origin: index-*.js:19": DevTools enlaza cada tool con la línea que la registró.
-
-Model Context Tool Inspector: extensión de François Beaufort (equipo de Chrome), no es producto oficial de Google. Lista y ejecuta tools, y chatea con ellas con tu API key de Gemini (por defecto gemini-3.6-flash). Requiere el flag.
+Model Context Tool Inspector: extensión de François Beaufort (equipo de Chrome), no es producto oficial de Google. Lista y ejecuta tools, y chatea con ellas con tu API key de Gemini (por defecto gemini-3.6-flash). Requiere el flag `#enable-webmcp-testing` (Chrome 150+), aunque la web tenga origin trial.
 
 chrome-devtools-mcp: WebMCP tras el flag --categoryExperimentalWebmcp. Playwright MCP: activado por defecto.
+
+Chrome 156 añade la anotación debugging para desarrolladores y testing: los agentes del usuario final pueden filtrar esas tools.
 En la demo uso **chrome-debug**, un MCP mío más ligero que estos dos: github.com/raultov/chrome-debug-mcp. Invitar a probarlo.
 -->
 
@@ -591,7 +597,11 @@ Cita: docs/ai/webmcp/secure-tools. Observado en septiembre de 2026.
 ![Panel WebMCP de Cloudflare: packs Content Credentials (C2PA) y Site MCP server](/images/cloudflare-webmcp-packs.png)
 
 <!--
-[37:30] Las 4 tools portables de knot.kz están a la vez en la página y en /mcp.
+[37:30] **Cloudflare** (beta desde el 06-08-2026): activas WebMCP en el panel y su CDN añade a cada HTML una línea `<script src="/.webmcp/bridge.js">`. Ese script registra las tools en la página. Tu código no cambia.
+
+Hoy hay dos packs. **Content Credentials**: lee los metadatos C2PA de tus imágenes (autor, herramienta, si es IA) para que el agente responda "¿esta foto es real?". No verifica la firma, y casi ninguna imagen de la web los lleva. **Site MCP server**: convierte las tools de tu `/mcp` en tools WebMCP; cada llamada va a tu servidor con la cookie del usuario, sin OAuth. Todo se ejecuta en el navegador del visitante.
+
+Las 4 tools portables de knot.kz están a la vez en la página y en /mcp.
 
 Probado en producción el 05-10-2026 con el pack activado. 
 
