@@ -9,6 +9,9 @@ slides/dist-export/
 .env
 .env.*
 
+# Raw recordings and captures (large originals; slides use slides/public/)
+images/
+
 # OS / editor
 .DS_Store
 Thumbs.db

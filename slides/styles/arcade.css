@@ -210,6 +210,17 @@
   box-shadow: 6px 6px 0 var(--bz-border);
 }
 
+/* Backup recording of a live demo: paused until the speaker presses play. */
+.slidev-layout.bz-demo-video video {
+  display: block;
+  max-height: 360px;
+  max-width: 100%;
+  margin: 0 auto;
+  border: 1px solid var(--bz-border);
+  border-radius: 6px;
+  box-shadow: 6px 6px 0 var(--bz-border);
+}
+
 
 /* Wider right column for slides whose screenshot must stay readable. */
 .slidev-layout.two-columns.bz-wide-right {

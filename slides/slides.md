@@ -434,7 +434,7 @@ round: BONUS STAGE
 Player 2 has entered the game
 
 <!--
-[18:00] Si algo falla: vídeo de respaldo (TODO: ruta del vídeo).
+[18:00] Demo grabada: avisa de que es un vídeo. Tres caminos, uno por slide.
 -->
 
 ---
@@ -449,8 +449,22 @@ Misma pregunta, tres caminos: *¿qué lenguajes soporta knot?*
 
 <!--
 [18:30] Del más integrado al menos integrado. Cierra con la cita: en 1 y 2 el agente es el invitado; en 3, tu web.
+-->
 
-**1. Leo** (Brave con brave://flags/#enable-webmcp-testing, modelo fijado: Qwen 3.5 35B; si no está, vídeo)
+---
+class: bz-demo-video
+---
+
+# Demo 1 · Leo en Brave
+
+<SlidevVideo controls autoreset="slide" playsinline>
+  <source src="/videos/brave-leo.mp4" type="video/mp4" />
+</SlidevVideo>
+
+<!--
+[19:00] Pulsa play (2:44, sin audio). Pausa donde quieras comentar.
+
+Brave con brave://flags/#enable-webmcp-testing, modelo fijado: Qwen 3.5 35B.
 www.knot.kz → abrir Leo → tools pill (6 tools) → "usa las tools para decirme qué lenguajes soporta knot"
 → Security warning de Brave (Allow) → list-supported-languages → 15 lenguajes.
 Después, "ejecuta copy_install_command" → DOBLE consentimiento, cada uno de un actor:
@@ -458,12 +472,52 @@ Después, "ejecuta copy_install_command" → DOBLE consentimiento, cada uno de u
   2. knot.kz (la web pone sus reglas): "An agent needs your permission" → Allow → copiado.
 Brave muestra su Security warning en CADA ejecución, aunque se repita la tool (salvo "Allow always" en la tools pill).
 Señalar el nombre en "Task complete": web_www_knot_kz_copy_install_command. Brave añade el origen como prefijo.
+-->
 
-**2. opencode + chrome-debug** (instruido con PROMPT.md)
+---
+class: bz-demo-video
+---
+
+# Demo 2 · opencode + chrome-debug
+
+<SlidevVideo controls autoreset="slide" playsinline>
+  <source src="/videos/opencode-chrome-debug.mp4" type="video/mp4" />
+</SlidevVideo>
+
+<!--
+[22:00] Pulsa play (2:55, sin audio). Pausa donde quieras comentar.
+
+opencode instruido con PROMPT.md.
 open_instance + navigate www.knot.kz → webmcp_list_tools: 6 tools → misma pregunta
 → navigate /#/contact → 7 tools → contact-knot-team rellena el formulario, NO lo envía (Pending hasta que pulso Send).
+-->
 
-**3. opencode + knot-site** ("knot-site": { "type": "remote", "url": "https://www.knot.kz/mcp" })
+---
+layout: two-cols
+layoutClass: bz-wide-right
+---
+
+# Demo 3 · opencode + knot-site
+
+MCP clásico: knot.kz ni se abre
+
+```json
+"knot-site": {
+  "type": "remote",
+  "url": "https://www.knot.kz/mcp"
+},
+```
+
+::right::
+
+<SlidevVideo controls autoreset="slide" playsinline>
+  <source src="/videos/knot-site.mp4" type="video/mp4" />
+</SlidevVideo>
+
+<!--
+[25:15] Pulsa play (1:46, sin audio). Pausa donde quieras comentar.
+
+La config de la izquierda es la entrada "mcp" de opencode.json: no hay navegador, solo una URL.
 "¿qué lenguajes soporta el indexador de knot? usa knot-site" → respuesta en el terminal.
 Solo 4 tools: copy-install-command, get-install-command y contact-knot-team no cruzan.
 -->
