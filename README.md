@@ -98,7 +98,7 @@ opencode mcp list
 2. **Utilidades** — API declarativa (formularios), API imperativa (hooks), anotaciones (`readOnly`, `untrustedContent`) y herramientas.
 3. **Demo** — knot.kz bajo demanda.
 4. **Retos** — refactorizar para desacoplar, ciclo de vida de la pestaña, costes y abusos, el caso C2PA de Cloudflare, dos bridges en una pestaña y la frontera real entre MCP y Web-MCP.
-5. **El futuro** — de SEO a AEO, cierre.
+5. **El futuro** — del buscador al agente, cierre.
 
 ## Licencia
 

@@ -541,17 +541,22 @@ class: bz-examples
 
 # Refactorizar para desacoplar
 
-- Lógica y estado **fuera del framework**: la UI y la tool usan el mismo código
-  - <v-click><code>addToCart</code> dentro de un <code>onClick</code>: llévalo a un modelo independiente del framework</v-click>
+- Lógica y estado **fuera del componente**: la UI y la tool usan el mismo código
+  - <v-click><code>addToCart</code> dentro de un <code>onClick</code>: llévalo a un servicio, store o hook que la tool pueda llamar</v-click>
 - Una tool es un **caso de uso**, no un botón
   - <v-click><code>checkout(...)</code>, no "pulsa Siguiente" tres veces</v-click>
 - Las **reglas**, en el modelo: la tool no pasa por tus botones ni formularios
   - <v-click>Un botón "Comprar" deshabilitado sin stock no frena a la tool</v-click>
 
 <!--
-[29:00] **Fuera del framework**: execute no es un onClick, solo puede llamar a funciones normales.
-[CLICK] Saca lógica y estado a TS puro: el botón y la tool llaman a lo mismo.
+[29:00] Habéis visto que las tools funcionan. Ahora viene lo difícil: que tu código esté preparado para tenerlas.
+Si la lógica vive en el botón, la tool tiene dos opciones: duplicarla o pulsar el botón. Las dos son malas.
+
+**Fuera del componente**: execute no es un onClick, solo puede llamar a funciones normales.
+[CLICK] No hace falta salir del framework: basta con que la lógica no viva en el manejador del botón. Un módulo sin framework solo compensa si la lógica se usa también fuera del navegador, como el /mcp de knot.kz.
 En knot.kz, la pestaña activa: la tool la cambia y React repinta.
+
+En Angular viene casi hecho: el `execute` hace `inject()` del mismo servicio que usa el botón, y con Signal Forms la tool comparte validadores y envío con el formulario.
 
 **Caso de uso**: expón lo que el usuario quiere conseguir, no sus clics.
 [CLICK] En knot.kz: get-install-command, y además calcula el docker run con tus núcleos y RAM. Más que cualquier botón.
@@ -567,22 +572,18 @@ En knot.kz, get-install-command valida núcleos y RAM dentro de la tool.
 
 - Sin pestaña abierta, **no hay tools**
 - Cada ruta publica sus tools: knot.kz tiene 6 en la portada y 7 en `/#/contact`
-- Formulario declarativo sin `respondWith()`: al navegar, el agente recibe **el JSON-LD de la página nueva**
 - Sesión del usuario = poder del usuario
 
 > "WebMCP tools are ephemeral. They exist only when your page is open."
 
 <!--
-[32:30] Probado en Chrome 153 (04-10-2026): si la tool navega o recarga, su return se pierde.
-El agente recibe los `<script type="application/ld+json">` de la página nueva, o [] si no hay.
+[32:30] Un servidor MCP está siempre ahí. Una tool de Web-MCP solo existe mientras alguien tiene tu página abierta, y eso lo cambia todo.
 
-**JSON-LD**: datos estructurados (schema.org) ocultos en el HTML; hasta ahora, para SEO.
+**Sin pestaña, no hay tools**: un agente no puede usar tu web a las 3 de la mañana sin que alguien la tenga abierta. Para eso está MCP.
 
-Por eso knot.kz usa respondWith() + fetch: sin él, el agente leería el JSON-LD de la portada, no "Message sent".
-Con respondWith(), si la página navega antes de resolver la promesa, el agente se queda esperando: ni tu respuesta ni el JSON-LD.
+**Cada ruta, sus tools**: lo visteis en la demo. En la portada, 6; al entrar en contacto aparece contact-knot-team. Las tools siguen a la pantalla.
 
-Issue abierto #135 del explainer. Propuesta: continuation tokens (la tool sigue en la página siguiente), aún no en Chrome.
-executeTool() devuelve null cuando la tool provoca una navegación.
+**Sesión = poder**: la tool hace lo que el usuario podría hacer, ni más ni menos. Sin login, lo de un visitante anónimo.
 -->
 
 ---
@@ -592,13 +593,13 @@ executeTool() devuelve null cuando la tool provoca una navegación.
 - Cada tool ocupa **contexto** del modelo en cada llamada: las 7 de knot.kz son **~1.000 tokens**
 - Presupuestos **recomendados** por Chrome (no los aplica): **30** el nombre, **500** la descripción, **150** cada parámetro, **1.500** la respuesta
 - *Rate limiting* y bots: tus tools son una **API documentada**, que se puede usar sin LLM
-- Menos tools, mejor descritas: *validate strictly in code, loosely in schema*. Chrome **no valida** el schema
+- Menos tools, mejor descritas: Chrome **no valida** el schema, se hace en el código.
 
 <!--
-[34:00] 
-
-El modelo no recuerda nada: en cada llamada se le reenvía el catálogo entero de tools. Una tarea de 3 pasos en knot.kz son unos 3.000 tokens solo en releer el menú. Y al navegar el catálogo cambia, así que la caché ayuda menos.
-Ninguna guía oficial habla de coste económico: es un reto abierto.
+[33:30] 
+las API de los LLM no guardan estado entre llamadas. En cada paso, el agente envía al modelo la conversación entera más la lista de tools disponibles
+Una tarea de 3 pasos en knot.kz son unos 3.000 tokens solo en releer el menú. Y al navegar el catálogo cambia, así que la caché ayuda menos.
+Aun así suele salir más barato que leer el DOM o hacer capturas: el reto es no inflar el catálogo.
 
 Probado en Chrome 153: acepta un nombre de 60 caracteres y una respuesta de 5.000 sin quejarse. Si te pasas, el problema aparece en el agente, no en el navegador. En knot.kz la descripción más larga usa la mitad del presupuesto; lo que va justo son las respuestas (1.321 de 1.500).
 
@@ -622,12 +623,12 @@ El schema orienta al modelo; la validación real va en tu código, con errores q
 
 - Sin `untrustedContentHint`, el agente trata la salida como fiable
 - Un manifiesto C2PA manipulado → **prompt injection**
-- Lo reporté a Cloudflare. Respuesta automática: *"We are no longer accepting emails at this address"*
+- Lo reporté a Cloudflare (HackerOne): cerrado como *Informative*, "expected behavior"
 
 > "It's impossible to guarantee safety inside of a large language model."
 
 <!--
-[36:00] Datos sacados del panel WebMCP de DevTools (capturas de respaldo:
+[35:30] Datos sacados del panel WebMCP de DevTools (capturas de respaldo:
 public/images/flags-knot-readonly.png y public/images/flags-c2pa-missing.png).
 En la de Cloudflare no aparece ni la fila "Flags".
 
@@ -637,6 +638,9 @@ Su propia defensa: cada resultado lleva signatureVerified: false. Eso protege de
 NO de las instrucciones escondidas en title, claim o assertions.
 Los hints valen false por defecto: no declarar = declarar que es contenido fiable.
 Cita: docs/ai/webmcp/secure-tools. Observado en septiembre de 2026.
+
+Reporte (06-09-2026, HackerOne): sin anotación de contenido no fiable no es vulnerabilidad para su política; es "expected behavior".
+Los fallos del bridge (CSP, nombres duplicados) los ven como calidad, no seguridad. Pero "useful for the ongoing development".
 -->
 
 ---
@@ -651,7 +655,7 @@ Cita: docs/ai/webmcp/secure-tools. Observado en septiembre de 2026.
 ![Panel WebMCP de Cloudflare: packs Content Credentials (C2PA) y Site MCP server](/images/cloudflare-webmcp-packs.png)
 
 <!--
-[37:30] **Cloudflare** (beta desde el 06-08-2026): activas WebMCP en el panel y su CDN añade a cada HTML una línea `<script src="/.webmcp/bridge.js">`. Ese script registra las tools en la página. Tu código no cambia.
+[37:00] **Cloudflare** (beta desde el 06-08-2026): activas WebMCP en el panel y su CDN añade a cada HTML una línea `<script src="/.webmcp/bridge.js">`. Ese script registra las tools en la página. Tu código no cambia.
 
 Hoy hay dos packs. **Content Credentials**: lee los metadatos C2PA de tus imágenes (autor, herramienta, si es IA) para que el agente responda "¿esta foto es real?". No verifica la firma, y casi ninguna imagen de la web los lleva. **Site MCP server**: convierte las tools de tu `/mcp` en tools WebMCP; cada llamada va a tu servidor con la cookie del usuario, sin OAuth. Todo se ejecuta en el navegador del visitante.
 
@@ -671,7 +675,7 @@ layout: statement
 # Su valor no es el dato, es el efecto sobre la sesión del usuario
 
 <!--
-[38:30] 
+[38:00] 
 
 WebMCP gana a MCP cuando la tool actúa sobre la sesión: cambia la interfaz que el usuario ve, usa su login sin OAuth, pide consentimiento en pantalla o deja que el humano pulse Send. MCP gana cuando no hay navegador.
 
@@ -687,29 +691,29 @@ round: FINAL BOSS
 
 # El futuro
 
-AEO: Agent Engine Optimization
+Que te encuentren ya no basta
 
 <!--
-[40:00]
+[39:30]
 -->
 
 ---
 
-# De SEO a AEO
+# Del buscador al agente
 
 - SEO: que los humanos te encuentren
-- AEO: que los agentes **te entiendan y te usen**
+- Agentes: que **te entiendan y te usen**
 - Las descripciones de tus tools deciden si el agente **te usa**, como el texto bajo cada resultado de Google influye en si el humano hace clic
 - El hueco: hoy un agente **tiene que visitar tu web** para saber qué tools tiene
 
 <!--
-[40:30] Limitación oficial: Clientes y navegadores deben visitar un site directamente para saber si tiene tools
+[40:00] Limitación oficial: Clientes y navegadores deben visitar un site directamente para saber si tiene tools
 
 El explainer descartó los manifiestos estáticos. Mientras tanto: llms.txt, JSON-LD y un /mcp con instructions (lo que hace knot.kz).
 
 Chrome lo dice en best-practices: la descripción decide qué tool elige el agente, y tiene una guía de Evals para medirlo. Pero ojo: Search Engine Journal y Moz (agosto 2026) coinciden en que WebMCP no es ranking ni indexación; actúa cuando el agente ya está en tu web. Lo que muestra Google se lee antes de visitar la web.
 
-**Ojo**: en SEO "AEO" suele ser Answer Engine Optimization (salir citado en ChatGPT o Perplexity). Aquí es Agent Engine Optimization: no que te citen, sino que te puedan usar.
+**Ojo**: no es AEO ni GEO (salir citado en las respuestas de la IA). Google dice que eso sigue siendo SEO y trata los agentes aparte.
 
 **Futuro**: ¿Posicionará tener tools? Hoy no: nadie lo usa como señal, y Search Engine Journal no encontró preferencia de los agentes por webs con WebMCP. Pero el precedente es schema.org: no sube el ranking, sí habilita resultados enriquecidos. Un buscador que indexe tools cerraría el hueco.
 -->
@@ -724,7 +728,7 @@ Chrome lo dice en best-practices: la descripción decide qué tool elige el agen
 - Declara tus flags y **valida en código**: la seguridad es parte del contrato
 
 <!--
-[42:30] Cuatro ideas para llevarse a casa.
+[42:00] Cuatro ideas para llevarse a casa.
 
 Apple (WebKit) está en contra: cree que el agente debe usar la web como un humano, con el HTML, sin una capa aparte. La respuesta: WebMCP no sustituye al HTML, añade un contrato que escribe la propia web; donde no hay tools, el agente sigue usando la interfaz.
 -->
@@ -757,7 +761,7 @@ layoutClass: bz-links
 - **Tool Inspector**: [github.com/beaufortfrancois/model-context-tool-inspector](https://github.com/beaufortfrancois/model-context-tool-inspector)
 
 <!--
-[43:15]
+[42:45]
 -->
 
 ---
@@ -773,5 +777,5 @@ Raúl Tovar
 github.com/raultov/biznaga-26-web-agentica
 
 <!--
-[43:30] Q&A. TODO: QR a las slides y redes.
+[43:00] Q&A. TODO: QR a las slides y redes.
 -->
