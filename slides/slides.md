@@ -701,19 +701,20 @@ Que te encuentren ya no basta
 
 # Del buscador al agente
 
-- SEO: que los humanos te encuentren
-- Agentes: que **te entiendan y te usen**
+- Ya no basta con que te encuentren: los agentes tienen que **entenderte y usarte**
 - Las descripciones de tus tools deciden si el agente **te usa**, como el texto bajo cada resultado de Google influye en si el humano hace clic
 - El hueco: hoy un agente **tiene que visitar tu web** para saber qué tools tiene
+- Mientras tanto, **deja un cartel**: un `llms.txt` que diga qué tools tienes y dónde
+- ¿Posicionará tener tools?
 
 <!--
 [40:00] Limitación oficial: Clientes y navegadores deben visitar un site directamente para saber si tiene tools
 
-El explainer descartó los manifiestos estáticos. Mientras tanto: llms.txt, JSON-LD y un /mcp con instructions (lo que hace knot.kz).
+Nadie indexa tools, y el explainer descartó un manifiesto fijo: las tools cambian con la ruta y el usuario.
+Mientras tanto, un cartel: llms.txt, un resumen en Markdown para modelos en la raíz de la web.
+El de knot.kz dice qué tools hay y en qué página (www.knot.kz/llms.txt).
 
 Chrome lo dice en best-practices: la descripción decide qué tool elige el agente, y tiene una guía de Evals para medirlo. Pero ojo: Search Engine Journal y Moz (agosto 2026) coinciden en que WebMCP no es ranking ni indexación; actúa cuando el agente ya está en tu web. Lo que muestra Google se lee antes de visitar la web.
-
-**Ojo**: no es AEO ni GEO (salir citado en las respuestas de la IA). Google dice que eso sigue siendo SEO y trata los agentes aparte.
 
 **Futuro**: ¿Posicionará tener tools? Hoy no: nadie lo usa como señal, y Search Engine Journal no encontró preferencia de los agentes por webs con WebMCP. Pero el precedente es schema.org: no sube el ranking, sí habilita resultados enriquecidos. Un buscador que indexe tools cerraría el hueco.
 -->
@@ -730,7 +731,8 @@ Chrome lo dice en best-practices: la descripción decide qué tool elige el agen
 <!--
 [42:00] Cuatro ideas para llevarse a casa.
 
-Apple (WebKit) está en contra: cree que el agente debe usar la web como un humano, con el HTML, sin una capa aparte. La respuesta: WebMCP no sustituye al HTML, añade un contrato que escribe la propia web; donde no hay tools, el agente sigue usando la interfaz.
+Apple (WebKit) está en contra: quiere que el agente use la web como un humano, con el HTML.
+La respuesta: Web-MCP no quita nada. Si hay tools, el agente las usa; si no, sigue usando la página como siempre.
 -->
 
 ---
