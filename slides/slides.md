@@ -53,7 +53,7 @@ layoutClass: bz-wide-left
 # La web está hecha para humanos
 
 - Los agentes usan la interfaz pensada para ti: la leen a base de **capturas de pantalla** y DOM
-- Frágil: un cambio de CSS rompe al agente
+- Frágil: el CSS puede despistar al agente
 - Caro: miles de tokens para "leer" una página
 - Ciego: no sabe qué hace un botón hasta que lo pulsa
 
