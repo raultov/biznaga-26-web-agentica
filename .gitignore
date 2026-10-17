@@ -12,6 +12,9 @@ slides/dist-export/
 # Raw recordings and captures (large originals; slides use slides/public/)
 images/
 
+# Rehearsal transcripts and analysis (local only)
+rehearsals/
+
 # OS / editor
 .DS_Store
 Thumbs.db

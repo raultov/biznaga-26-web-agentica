@@ -303,21 +303,6 @@
   overflow-wrap: anywhere;
 }
 
-/* Insert coin slide: what you bring vs. what you can skip (free play in green). */
-.slidev-layout.two-columns.bz-coin li {
-  font-size: 1.05rem;
-  margin: 0.8rem 0;
-}
-
-/* The right column is a flex item, so its first margin does not collapse like the left one. */
-.slidev-layout.two-columns.bz-coin li:first-child {
-  margin-top: 0;
-}
-
-.slidev-layout.two-columns.bz-coin .col-right h2 {
-  color: var(--bz-green);
-}
-
 /* ---------- Tables ---------- */
 .slidev-layout table {
   width: 100%;
