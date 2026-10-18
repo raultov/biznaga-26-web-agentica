@@ -57,7 +57,7 @@ TODO: foto, redes, QR a las slides.
 > ¿Y si la página pudiera decirle al agente qué sabe hacer?
 
 <!--
-[1:15] Hook. Pregunta al público: ¿quién ha visto a un agente pelearse con un datepicker?
+[1:30] Hook. Pregunta al público: ¿quién ha visto a un agente pelearse con un datepicker?
 
 No hace falta saber de frameworks ni de LLMs: lo que necesitas lo vamos viendo.
 -->
@@ -72,7 +72,7 @@ round: ROUND 1
 De MCP a Web-MCP
 
 <!--
-[2:45]
+[3:15]
 -->
 
 ---
@@ -86,7 +86,7 @@ De MCP a Web-MCP
 - Spec actual **2026-07-28**: **sin estado**, cada petición se describe a sí misma
 
 <!--
-[3:00] Solo lo justo. Mucha gente ya lo conoce: preguntar a mano alzada.
+[3:30] Solo lo justo. Mucha gente ya lo conoce: preguntar a mano alzada.
 
 **Host** = tu CLI (opencode). **Client** = el conector que crea por cada servidor de su config. **Server** = knot-site (www.knot.kz/mcp).
 
@@ -111,7 +111,7 @@ cada petición llega sola y completa.
 > "Instead of your application being a guest within an agent, the agent is a guest on your platform."
 
 <!--
-[5:15] Web-MCP copia ideas de MCP, como las tools (nombre, descripción, schema de entrada), pero no el protocolo:
+[5:45] Web-MCP copia ideas de MCP, como las tools (nombre, descripción, schema de entrada), pero no el protocolo:
 no hay JSON-RPC entre la página y el agente, es una API de JavaScript del navegador.
 
 Microsoft y Google empujan este proyecto. No está en el Standards Track del W3C.
@@ -142,7 +142,7 @@ El agente entra en tu web y juega con tus reglas.
 | ChatGPT (escritorio) | **Site tools** en su navegador integrado (agosto 2026) |
 
 <!--
-[6:45] NO está activo por defecto en Chrome estable: hace falta origin trial o flag.
+[8:00] NO está activo por defecto en Chrome estable: hace falta origin trial o flag.
 
 **Origin trial**: knot.kz registra su dominio, recibe un token y la API funciona para sus visitantes en Chrome normal.
 lo tiene desde el 01-10-2026 (caduca el 30-03-2027).
@@ -172,7 +172,7 @@ son las que de verdad extienden la adopción: lo activan en todas sus webs de go
 > "WebMCP is not an extension or a replacement of MCP."
 
 <!--
-[8:30] De hecho, las aplicaciones agénticas más eficaces usan MCP y WebMCP a la vez. → knot.kz tiene las dos y en la demo usamos ambas.
+[9:45] De hecho, las aplicaciones agénticas más eficaces usan MCP y WebMCP a la vez. → knot.kz tiene las dos y en la demo usamos ambas.
 
 Shopify también: WebMCP en todas sus tiendas para el agente del comprador, y servidores MCP para quien construye su propio agente.
 Cada tienda tiene su endpoint MCP (`/api/ucp/mcp`, protocolo UCP): catálogo, carrito, checkout y pedidos, sin navegador.
@@ -193,7 +193,7 @@ round: ROUND 2
 Dos APIs, un mismo objetivo
 
 <!--
-[9:45]
+[11:15]
 -->
 
 ---
@@ -226,7 +226,7 @@ await document.modelContext.registerTool(tool, { signal: controller.signal })
 ```
 
 <!--
-[10:00] 
+[11:30] 
 
 1: input schema, qué puede mandar el agente. 
 
@@ -266,7 +266,7 @@ El abstract habla de navigator.modelContext: contarlo como prueba de lo rápido 
 - Sin `toolautosubmit`: el agente rellena, **el humano pulsa Send**
 
 <!--
-[11:15]
+[13:30]
 
 1: toolname + tooldescription, lo que lee el modelo (como el bloque 3 de la imperativa).
 
@@ -309,7 +309,7 @@ Probado en knot.kz (Chrome 153, 03-10-2026):
 > knot.kz: **sin librerías**, un hook de ~70 líneas. Una librería no te ahorra código: te aísla de los **cambios de la spec**.
 
 <!--
-[12:30] Angular es el único con soporte **oficial**: desde la v22, en experimental. Puede cambiar incluso en versiones menores.
+[15:30] Angular es el único con soporte **oficial**: desde la v22, en experimental. Puede cambiar incluso en versiones menores.
 Tú no tocas `document.modelContext`: si el navegador cambia, lo absorbe Angular.
 
 React y Vue: solo librerías de la **comunidad**.
@@ -348,7 +348,7 @@ layout: two-cols
 ```
 
 <!--
-[14:30] Estas flags son lo que la página **declara** al agente: el navegador las transmite, pero no las hace cumplir.
+[17:45] Estas flags son lo que la página **declara** al agente: el navegador las transmite, pero no las hace cumplir.
 
 **Excepción** en la API declarativa: **sin toolautosubmit**, el navegador rellena pero no envía; eso sí lo impone.
 El navegador controla quién llama a qué y desde dónde (solo HTTPS, tools ligadas a su origen); lo que la tool declara o hace es responsabilidad de la página.
@@ -378,7 +378,7 @@ layoutClass: bz-wide-right bz-spotlight-last
 ![Panel WebMCP de DevTools en knot.kz](/images/devtools-webmcp-panel.png)
 
 <!--
-[15:45] Transición a la demo.
+[19:30] Transición a la demo.
 
 **Desarrollo**: flag #enable-webmcp-testing (en tu navegador; también lo necesita el Model Context Tool Inspector). Usuarios: origin trial (token en tu web).
 Invitar al público a probarlo: knot.kz tiene origin trial, funciona en su Chrome 149+ sin tocar flags.
@@ -401,7 +401,7 @@ round: BONUS STAGE
 Player 2 has entered the game
 
 <!--
-[17:15] Demo grabada: avisa de que es un vídeo. Tres caminos, uno por slide.
+[21:00] Demo grabada: avisa de que es un vídeo. Tres caminos, uno por slide.
 -->
 
 ---
@@ -415,7 +415,7 @@ Misma pregunta, tres caminos: *¿qué lenguajes soporta knot?*
 3. **opencode + knot-site**: MCP clásico, knot.kz ni se abre
 
 <!--
-[17:45] Del más integrado al menos integrado. Cierra con la cita: en 1 y 2 el agente es el invitado; en 3, tu web.
+[21:15] Del más integrado al menos integrado. Cierra con la cita: en 1 y 2 el agente es el invitado; en 3, tu web.
 -->
 
 ---
@@ -429,7 +429,7 @@ class: bz-demo-video
 </SlidevVideo>
 
 <!--
-[18:15] Pulsa play (2:44, sin audio). Pausa donde quieras comentar.
+[22:00] Pulsa play (2:44, sin audio). Pausa donde quieras comentar.
 
 Brave con brave://flags/#enable-webmcp-testing, modelo fijado: Qwen 3.5 35B.
 www.knot.kz → abrir Leo → tools pill (6 tools) → "usa las tools para decirme qué lenguajes soporta knot"
@@ -452,11 +452,12 @@ class: bz-demo-video
 </SlidevVideo>
 
 <!--
-[21:00] Pulsa play (2:48, sin audio). Pausa donde quieras comentar.
+[25:00] Pulsa play (1:24, sin audio). Pausa donde quieras comentar.
 
-opencode instruido con PROMPT.md.
-open_instance + navigate www.knot.kz → webmcp_list_tools: 6 tools → misma pregunta
-→ navigate /#/contact → 7 tools → contact-knot-team rellena el formulario, NO lo envía (Pending hasta que pulso Send).
+navigate knot.kz/#/contact → webmcp_list_tools: 7 tools → webmcp_invoke_tool contact-knot-team con datos de test.
+El NAVEGADOR rellena el formulario y NO lo envía (no hay toolautosubmit). La llamada sale en rojo: es el timeout de chrome-debug, la invocación sigue en Pending.
+El agente consulta: Pending, "espera a que un humano pulse Send message". Pulso Send → "Message sent".
+No hay ningún diálogo de consentimiento: lo que falta es que el humano envíe.
 -->
 
 ---
@@ -482,7 +483,7 @@ MCP clásico: knot.kz ni se abre
 </SlidevVideo>
 
 <!--
-[24:00] Pulsa play (1:36, sin audio). Pausa donde quieras comentar.
+[26:30] Pulsa play (1:36, sin audio). Pausa donde quieras comentar.
 
 La config de la izquierda es la entrada "mcp" de opencode.json: no hay navegador, solo una URL.
 "¿qué lenguajes soporta el indexador de knot? usa knot-site" → respuesta en el terminal.
@@ -499,7 +500,7 @@ round: ROUND 3
 Hablando desde las trincheras
 
 <!--
-[25:45]
+[28:15]
 -->
 
 ---
@@ -516,7 +517,7 @@ class: bz-examples
   - <v-click>Un botón "Comprar" deshabilitado sin stock no frena a la tool</v-click>
 
 <!--
-[26:00] Habéis visto que las tools funcionan. Ahora viene lo difícil: que tu código esté preparado para tenerlas.
+[28:30] Habéis visto que las tools funcionan. Ahora viene lo difícil: que tu código esté preparado para tenerlas.
 Si la lógica vive en el botón, la tool tiene dos opciones: duplicarla o pulsar el botón. Las dos son malas.
 
 **Fuera del componente**: execute no es un onClick, solo puede llamar a funciones normales.
@@ -544,7 +545,7 @@ En knot.kz, get-install-command valida núcleos y RAM dentro de la tool.
 > "WebMCP tools are ephemeral. They exist only when your page is open."
 
 <!--
-[29:45] Un servidor MCP está siempre ahí. Una tool de Web-MCP solo existe mientras alguien tiene tu página abierta, y eso lo cambia todo.
+[31:30] Un servidor MCP está siempre ahí. Una tool de Web-MCP solo existe mientras alguien tiene tu página abierta, y eso lo cambia todo.
 
 **Sin pestaña, no hay tools**: un agente no puede usar tu web a las 3 de la mañana sin que alguien la tenga abierta. Para eso está MCP.
 
@@ -563,13 +564,13 @@ En knot.kz, get-install-command valida núcleos y RAM dentro de la tool.
 - **Menos tools, mejor descritas**: menos tokens y menos llamadas fallidas
 
 <!--
-[31:00] 
+[32:45] 
 OJO con la cifra: ~1.000 tokens son las 7 tools JUNTAS, no cada una. Se reenvían en cada paso: 3 pasos = 3.000.
 las API de los LLM no guardan estado entre llamadas. En cada paso, el agente envía al modelo la conversación entera más la lista de tools disponibles
 Una tarea de 3 pasos en knot.kz son unos 3.000 tokens solo en releer el menú. Y al navegar el catálogo cambia, así que la caché ayuda menos.
 Aun así suele salir más barato que leer el DOM o hacer capturas: el reto es no inflar el catálogo.
 
-Presupuestos: la respuesta es 1.500, no 500 (500 es la descripción). Chrome no los aplica. knot.kz los vigila en CI. (UNA frase)
+Presupuestos recomendados; Chrome no los aplica; knot.kz los vigila en CI. (UNA frase)
 
 Abusos: un script puede llamar a tus tools sin modelo. En knot.kz solo contact cuesta dinero, y está protegido. (UNA frase)
 
@@ -598,7 +599,7 @@ knot.kz agrupa 5 combinaciones en get-install-command, pero separa copy-install-
 > "It's impossible to guarantee safety inside of a large language model."
 
 <!--
-[33:30] Datos sacados del panel WebMCP de DevTools (capturas de respaldo:
+[35:45] Datos sacados del panel WebMCP de DevTools (capturas de respaldo:
 public/images/flags-knot-readonly.png y public/images/flags-c2pa-missing.png).
 En la de Cloudflare no aparece ni la fila "Flags".
 
@@ -625,7 +626,7 @@ Los fallos del bridge (CSP, nombres duplicados) los ven como calidad, no segurid
 ![Panel WebMCP de Cloudflare: packs Content Credentials (C2PA) y Site MCP server](/images/cloudflare-webmcp-packs.png)
 
 <!--
-[35:45] **Cloudflare** (beta desde el 06-08-2026): activas WebMCP en el panel y su CDN añade a cada HTML una línea `<script src="/.webmcp/bridge.js">`. Ese script registra las tools en la página. Tu código no cambia.
+[38:30] **Cloudflare** (beta desde el 06-08-2026): activas WebMCP en el panel y su CDN añade a cada HTML una línea `<script src="/.webmcp/bridge.js">`. Ese script registra las tools en la página. Tu código no cambia.
 
 Hoy hay dos packs. **Content Credentials**: lee los metadatos C2PA de tus imágenes (autor, herramienta, si es IA) para que el agente responda "¿esta foto es real?". No verifica la firma, y casi ninguna imagen de la web los lleva. **Site MCP server**: convierte las tools de tu `/mcp` en tools WebMCP; cada llamada va a tu servidor con la cookie del usuario, sin OAuth. Todo se ejecuta en el navegador del visitante.
 
@@ -639,22 +640,6 @@ Probado en producción el 05-10-2026 con el pack activado.
 -->
 
 ---
-layout: statement
----
-
-# Su valor no es el dato, es el efecto sobre la sesión del usuario
-
-<!--
-[36:45] 
-
-WebMCP gana a MCP cuando la tool actúa sobre la sesión: cambia la interfaz que el usuario ve, usa su login sin OAuth, pide consentimiento en pantalla o deja que el humano pulse Send. MCP gana cuando no hay navegador.
-
-Una sola definición por tool, publicada por el canal que toca: knot.kz define sus 4 tools de datos una vez y las sirve en la página y en /mcp. Lo que rompe es duplicarlas en la misma pestaña (slide anterior).
-
-La prueba: si la tool tiene sentido ejecutada desde un servidor sin navegador, es dato (MCP y WebMCP). Si no, es efecto: solo WebMCP.
--->
-
----
 layout: section
 round: FINAL BOSS
 ---
@@ -664,7 +649,7 @@ round: FINAL BOSS
 Que te encuentren ya no basta
 
 <!--
-[37:30]
+[39:15]
 -->
 
 ---
@@ -678,7 +663,7 @@ Que te encuentren ya no basta
 - ¿Posicionará tener tools?
 
 <!--
-[37:45] Limitación oficial: Clientes y navegadores deben visitar un site directamente para saber si tiene tools
+[39:30] Limitación oficial: Clientes y navegadores deben visitar un site directamente para saber si tiene tools
 
 Nadie indexa tools, y el explainer descartó un manifiesto fijo: las tools cambian con la ruta y el usuario.
 Mientras tanto, un cartel: llms.txt, un resumen en Markdown para modelos en la raíz de la web.
@@ -699,7 +684,7 @@ Chrome lo dice en best-practices: la descripción decide qué tool elige el agen
 - Declara tus flags y **valida en código**: la seguridad es parte del contrato
 
 <!--
-[39:45] Cuatro ideas para llevarse a casa.
+[41:15] Cuatro ideas para llevarse a casa.
 
 Apple (WebKit) está en contra: quiere que el agente use la web como un humano, con el HTML.
 La respuesta: Web-MCP no quita nada. Si hay tools, el agente las usa; si no, sigue usando la página como siempre.
@@ -733,7 +718,7 @@ layoutClass: bz-links
 - **Tool Inspector**: [github.com/beaufortfrancois/model-context-tool-inspector](https://github.com/beaufortfrancois/model-context-tool-inspector)
 
 <!--
-[41:15]
+[42:00]
 -->
 
 ---
@@ -749,5 +734,5 @@ Raúl Tovar
 github.com/raultov/biznaga-26-web-agentica
 
 <!--
-[41:30] Q&A. TODO: QR a las slides y redes.
+[42:15] Q&A. TODO: QR a las slides y redes.
 -->
