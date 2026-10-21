@@ -419,17 +419,17 @@ Misma pregunta, tres caminos: *¿qué lenguajes soporta knot?*
 -->
 
 ---
-class: bz-demo-video
+demoVideo: true
 ---
 
 # Demo 1 · Leo en Brave
 
-<SlidevVideo controls autoreset="slide" playsinline>
+<SlidevVideo v-click autoplay muted controls autoreset="slide" playsinline class="bz-video-full">
   <source src="/videos/brave-leo.mp4" type="video/mp4" />
 </SlidevVideo>
 
 <!--
-[22:00] Pulsa play (2:44, sin audio). Pausa donde quieras comentar.
+[22:00] Intro → pulsa → y arranca solo a toda la slide (2:44, sin audio). Pausa con el ratón. → otra vez: siguiente slide.
 
 Brave con brave://flags/#enable-webmcp-testing, modelo fijado: Qwen 3.5 35B.
 www.knot.kz → abrir Leo → tools pill (6 tools) → "usa las tools para decirme qué lenguajes soporta knot"
@@ -442,17 +442,17 @@ Señalar el nombre en "Task complete": web_www_knot_kz_copy_install_command. Bra
 -->
 
 ---
-class: bz-demo-video
+demoVideo: true
 ---
 
 # Demo 2 · opencode + chrome-debug
 
-<SlidevVideo controls autoreset="slide" playsinline>
+<SlidevVideo v-click autoplay muted controls autoreset="slide" playsinline class="bz-video-full">
   <source src="/videos/opencode-chrome-debug.mp4" type="video/mp4" />
 </SlidevVideo>
 
 <!--
-[25:00] Pulsa play (1:24, sin audio). Pausa donde quieras comentar.
+[25:00] Intro → pulsa → y arranca solo a toda la slide (1:24, sin audio). Pausa con el ratón. → otra vez: siguiente slide.
 
 navigate knot.kz/#/contact → webmcp_list_tools: 7 tools → webmcp_invoke_tool contact-knot-team con datos de test.
 El NAVEGADOR rellena el formulario y NO lo envía (no hay toolautosubmit). La llamada sale en rojo: es el timeout de chrome-debug, la invocación sigue en Pending.
@@ -461,8 +461,7 @@ No hay ningún diálogo de consentimiento: lo que falta es que el humano envíe.
 -->
 
 ---
-layout: two-cols
-layoutClass: bz-wide-right
+demoVideo: true
 ---
 
 # Demo 3 · opencode + knot-site
@@ -476,14 +475,12 @@ MCP clásico: knot.kz ni se abre
 },
 ```
 
-::right::
-
-<SlidevVideo controls autoreset="slide" playsinline>
+<SlidevVideo v-click autoplay muted controls autoreset="slide" playsinline class="bz-video-full">
   <source src="/videos/knot-site.mp4" type="video/mp4" />
 </SlidevVideo>
 
 <!--
-[26:30] Pulsa play (1:36, sin audio). Pausa donde quieras comentar.
+[26:30] Intro con la config → pulsa → y arranca solo a toda la slide (1:36, sin audio). Pausa con el ratón. → otra vez: siguiente slide.
 
 La config de la izquierda es la entrada "mcp" de opencode.json: no hay navegador, solo una URL.
 "¿qué lenguajes soporta el indexador de knot? usa knot-site" → respuesta en el terminal.
