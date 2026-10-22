@@ -3,11 +3,51 @@
 > **Construyendo la Web Agéntica: Introducción, Utilidades y Retos de Web-MCP**
 > Charla de Raúl Tovar en [BiznagaFest 2026](https://www.biznagafest.com) — 7 de noviembre de 2026, 17:10–18:00, Auditorio Biznaguito.
 
+## Recursos de la charla
+
+¿Vienes del código QR? Aquí tienes todo lo que salió en la charla.
+
+### Las slides
+
+- **Contenido completo con notas**: [`slides/slides.md`](slides/slides.md)
+
+### Spec y documentación
+
+- **WebMCP (spec)**: [webmachinelearning.github.io/webmcp](https://webmachinelearning.github.io/webmcp/)
+- **Explainer e issues**: [github.com/webmachinelearning/webmcp](https://github.com/webmachinelearning/webmcp)
+- **Chrome**: [developer.chrome.com/docs/ai/webmcp](https://developer.chrome.com/docs/ai/webmcp)
+- **Chrome Status**: [chromestatus.com/feature/5117755740913664](https://chromestatus.com/feature/5117755740913664)
+- **MCP (spec 2026-07-28)**: [modelcontextprotocol.io/specification/2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28)
+- **Angular**: [angular.dev/ai/webmcp](https://angular.dev/ai/webmcp)
+- **Cloudflare**: [blog.cloudflare.com/webmcp](https://blog.cloudflare.com/webmcp/)
+
+### Herramientas
+
+- **knot.kz** (el laboratorio de la demo): [www.knot.kz](https://www.knot.kz/)
+- **chrome-debug** (el MCP de la demo 2): [github.com/raultov/chrome-debug-mcp](https://github.com/raultov/chrome-debug-mcp)
+- **chrome-devtools-mcp**: [github.com/ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp)
+- **Playwright MCP**: [github.com/microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp)
+- **Model Context Tool Inspector**: [github.com/beaufortfrancois/model-context-tool-inspector](https://github.com/beaufortfrancois/model-context-tool-inspector)
+
+### Librerías (slide «¿Y mi framework?»)
+
+- **React**: [`usewebmcp`](https://www.npmjs.com/package/usewebmcp)
+- **Vue / Nuxt**: [`vue-webmcp`](https://www.npmjs.com/package/vue-webmcp), [`nuxt-webmcp`](https://www.npmjs.com/package/nuxt-webmcp)
+- **Polyfill y tipos**: [`@mcp-b/global`](https://www.npmjs.com/package/@mcp-b/global), [`webmcp-types`](https://www.npmjs.com/package/webmcp-types)
+
+### Otros conceptos citados
+
+- **C2PA** (metadatos de procedencia de imágenes y vídeos): [c2pa.org](https://c2pa.org)
+- **llms.txt**: [llmstxt.org](https://llmstxt.org)
+- **schema.org**: [schema.org](https://schema.org)
+
+---
+
 ## ¿Para qué sirve este repo?
 
 Este repositorio reúne **todo el material de la charla** en un solo sitio:
 
-1. **La presentación** ([Slidev](https://sli.dev), 37 diapositivas) lista para proyectar, ensayar o exportar a PDF/PPTX.
+1. **La presentación** ([Slidev](https://sli.dev), 30 diapositivas) lista para proyectar, ensayar o exportar a PDF/PPTX.
 2. **La demo en vivo de WebMCP**: el prompt con el que se instruye a un agente para que descubra y ejecute las herramientas que un sitio web publica (`PROMPT.md`).
 3. **Las notas de investigación y la bibliografía** de la charla (`notes.txt`).
 4. **Las capturas del caso de seguridad C2PA** (el incidente del bridge de Cloudflare) usadas en la sección *Retos*.
