@@ -1,7 +1,7 @@
 # Biznaga 26 — Web Agéntica
 
 > **Construyendo la Web Agéntica: Introducción, Utilidades y Retos de Web-MCP**
-> Charla de Raúl Tovar en [BiznagaFest 2026](https://www.biznagafest.com) — 7 de noviembre de 2026, 17:10–18:00, Auditorio Biznaguito.
+> Charla de Raúl Tovar en [BiznagaFest 2026](https://www.biznagafest.com) — 7 de noviembre de 2026, 12:00–12:50, Auditorio Biznaguito.
 
 ## Recursos de la charla
 
@@ -9,6 +9,7 @@
 
 ### Las slides
 
+- **PDF de las slides**: [`webmcp-biznaga-2026.pdf`](webmcp-biznaga-2026.pdf)
 - **Contenido completo con notas**: [`slides/slides.md`](slides/slides.md)
 
 ### Spec y documentación
@@ -28,10 +29,11 @@
 - **chrome-devtools-mcp**: [github.com/ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp)
 - **Playwright MCP**: [github.com/microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp)
 - **Model Context Tool Inspector**: [github.com/beaufortfrancois/model-context-tool-inspector](https://github.com/beaufortfrancois/model-context-tool-inspector)
+- **media-transcriber** (MCP para transcribir y capturar vídeo; con él se analizaron los ensayos de esta charla): [github.com/raultov/media-transcriber-mcp](https://github.com/raultov/media-transcriber-mcp)
 
 ### Librerías (slide «¿Y mi framework?»)
 
-- **React**: [`usewebmcp`](https://www.npmjs.com/package/usewebmcp)
+- **React**: [`use-webmcp-tool`](https://www.npmjs.com/package/use-webmcp-tool) (Google Chrome Labs, experimental)
 - **Vue / Nuxt**: [`vue-webmcp`](https://www.npmjs.com/package/vue-webmcp), [`nuxt-webmcp`](https://www.npmjs.com/package/nuxt-webmcp)
 - **Polyfill y tipos**: [`@mcp-b/global`](https://www.npmjs.com/package/@mcp-b/global), [`webmcp-types`](https://www.npmjs.com/package/webmcp-types)
 
@@ -61,6 +63,7 @@ En resumen: si quieres **dar o replicar la charla**, este repo tiene todo lo nec
 | `slides/` | Presentación completa en Slidev (código fuente) |
 | `slides/slides.md` | **Todo el contenido de las diapositivas** + notas de ponente |
 | `slides/dist-export/` | Exportaciones `webmcp-biznaga-2026.pdf` / `.pptx` (generadas, no versionadas) |
+| `webmcp-biznaga-2026.pdf` | PDF de las slides enlazado desde el QR (copia versionada de `slides/dist-export/`) |
 | `PROMPT.md` | Prompt para que un agente LLM use las tools WebMCP de un sitio (demo con `chrome-debug` y [knot.kz](https://www.knot.kz)) |
 | `notes.txt` | Bibliografía, guion de la demo y notas de argumentación de la charla |
 | `images/security/` | Capturas del caso de seguridad C2PA que se analiza en *Retos* |
@@ -90,7 +93,7 @@ npm run dev          # servidor de desarrollo → http://localhost:3030
 | `npm run build` | Genera la SPA estática en `slides/dist/` (funciona sin red) |
 | `npm run preview` | Sirve `slides/dist/` en local (puerto 3030) |
 | `npm run export` | Exporta **PDF + PPTX** a `slides/dist-export/` |
-| `npm run export:pdf` | Solo PDF → `slides/dist-export/webmcp-biznaga-2026.pdf` |
+| `npm run export:pdf` | Solo PDF → `slides/dist-export/webmcp-biznaga-2026.pdf` (cópialo a la raíz del repo para actualizar el del QR) |
 | `npm run export:pptx` | Solo PPTX (con notas de ponente) → `slides/dist-export/webmcp-biznaga-2026.pptx` |
 | `npm run export:png` | PNG por diapositiva → `slides/dist-export/png/` |
 

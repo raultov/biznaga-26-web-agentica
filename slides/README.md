@@ -1,6 +1,6 @@
 # Construyendo la Web Agéntica — BiznagaFest 2026
 
-Slides de la charla de Raúl Tovar (7 nov 2026, 17:10, Auditorio Biznaguito), hechas con [Slidev](https://sli.dev).
+Slides de la charla de Raúl Tovar (7 nov 2026, 12:00, Auditorio Biznaguito), hechas con [Slidev](https://sli.dev).
 
 ## Requisitos
 

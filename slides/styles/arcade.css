@@ -223,6 +223,24 @@
   background: #000;
 }
 
+/* PDF export: a still frame (print-timestamp) under the title instead of a cover. */
+html.print .slidev-page .slidev-layout video.bz-video-full {
+  position: static;
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 360px;
+  margin: 0 auto;
+  border: 1px solid var(--bz-border);
+  border-radius: 6px;
+  box-shadow: 6px 6px 0 var(--bz-border);
+}
+
+html.print .slidev-page .slidev-layout:has(pre) video.bz-video-full {
+  max-height: 200px;
+}
+
 
 /* Wider right column for slides whose screenshot must stay readable. */
 .slidev-layout.two-columns.bz-wide-right {
