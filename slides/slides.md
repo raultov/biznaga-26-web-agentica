@@ -103,26 +103,28 @@ cada petición llega sola y completa.
 
 # Web-MCP: la página es el servidor
 
+<v-clicks>
+
 - Web-MCP es una propuesta de API web, inspirada en MCP, que aún no es estándar
 - *Draft* del *W3C Web Machine Learning Community Group* (Microsoft + Google)
 - La web publica sus tools **desde el frontend**, con JavaScript o con HTML
 - El navegador media cada llamada: la tool corre en la página, **con la sesión del usuario**
 
-> "Instead of your application being a guest within an agent, the agent is a guest on your platform."
+</v-clicks>
 
 <!--
-[5:15] Web-MCP copia ideas de MCP, como las tools (nombre, descripción, schema de entrada), pero no el protocolo:
+[5:15] [CLICK] Web-MCP copia ideas de MCP, como las tools (nombre, descripción, schema de entrada), pero no el protocolo:
 no hay JSON-RPC entre la página y el agente, es una API de JavaScript del navegador.
 
-Microsoft y Google empujan este proyecto.
+[CLICK] Microsoft y Google empujan este proyecto.
 Sigue sin ser estándar, pero el W3C ya está redactando el charter de un Working Group que lo adoptaría: es el siguiente paso del camino de WebAssembly.
 Estado comprobado el 25-10-2026: Draft Community Group Report del 20-10-2026; charter del Agentic Web WG en borrador (w3c/strategy #576), sin aprobar.
 WebAssembly nació en un Community Group y hoy es estándar W3C; WebGPU también, y ya está en Candidate Recommendation.
 
-El agente puede estar dentro del navegador (Leo en Brave) o fuera (opencode vía chrome-debug),
+[CLICK] El agente puede estar dentro del navegador (Leo en Brave) o fuera (opencode vía chrome-debug),
 pero la TOOL siempre se ejecuta **DENTRO de la pestaña**.
 
-**Media**: el agente no habla con la página, se lo pide al navegador, que ejecuta la tool y le devuelve el resultado.
+[CLICK] **Media**: el agente no habla con la página, se lo pide al navegador, que ejecuta la tool y le devuelve el resultado.
 **Con la sesión del usuario**: la tool es JS de la web y usa lo que tenga esa pestaña (cookies, estado, login si lo hay); el agente nunca ve las credenciales.
 El agente actúa con los permisos del usuario, no con más.
 
@@ -558,28 +560,32 @@ En knot.kz, get-install-command valida núcleos y RAM dentro de la tool.
 
 # Costes y abusos
 
+<v-clicks>
+
 - Cada tool ocupa **contexto** del modelo en cada llamada: las 7 de knot.kz son **~1.000 tokens**
 - Presupuestos **recomendados** por Chrome (no los aplica): **30** el nombre, **500** la descripción, **150** cada parámetro, **1.500** la respuesta
 - *Rate limiting* y bots: tus tools son una **API documentada**, que se puede usar sin LLM
 - **Menos tools, mejor descritas**: menos tokens y menos llamadas fallidas
 
+</v-clicks>
+
 <!--
 [31:00] 
-OJO con la cifra: ~1.000 tokens son las 7 tools JUNTAS, no cada una. Se reenvían en cada paso: 3 pasos = 3.000.
+[CLICK] OJO con la cifra: ~1.000 tokens son las 7 tools JUNTAS, no cada una. Se reenvían en cada paso: 3 pasos = 3.000.
 las API de los LLM no guardan estado entre llamadas. En cada paso, el agente envía al modelo la conversación entera más la lista de tools disponibles
 Una tarea de 3 pasos en knot.kz son unos 3.000 tokens solo en releer el menú. Y al navegar el catálogo cambia, así que la caché ayuda menos.
 Aun así suele salir más barato que leer el DOM o hacer capturas: el reto es no inflar el catálogo.
 
-Presupuestos recomendados; Chrome no los aplica; knot.kz los vigila en CI. (UNA frase)
+[CLICK] Presupuestos recomendados; Chrome no los aplica; knot.kz los vigila en CI. (UNA frase)
 
-Abusos: un script puede llamar a tus tools sin modelo. En knot.kz solo contact cuesta dinero, y está protegido. (UNA frase)
+[CLICK] Abusos: un script puede llamar a tus tools sin modelo. En knot.kz solo contact cuesta dinero, y está protegido. (UNA frase)
 
 RESPALDO para preguntas, no decirlo:
 - Probado en Chrome 153: acepta un nombre de 60 caracteres y una respuesta de 5.000 sin quejarse. En knot.kz lo que va justo son las respuestas (1.321 de 1.500).
 - scripts/webmcp-budget.mjs falla el build si una tool supera el presupuesto (objetivo propio: 1.350 caracteres, el 90 %).
 - Protección de contact: honeypot, validación en servidor y rate limit en Cloudflare.
 
-**Menos tools, mejor descritas**: cada tool se paga en cada paso, y una descripción confusa hace que el agente elija mal y repita.
+[CLICK] **Menos tools, mejor descritas**: cada tool se paga en cada paso, y una descripción confusa hace que el agente elija mal y repita.
 knot.kz agrupa 5 combinaciones en get-install-command, pero separa copy-install-command porque pide consentimiento.
 -->
 
@@ -656,22 +662,28 @@ Que te encuentren ya no basta
 
 # Del buscador al agente
 
+<v-clicks>
+
 - Ya no basta con que te encuentren: los agentes tienen que **entenderte y usarte**
 - Las descripciones de tus tools deciden si el agente **te usa**, como el texto bajo cada resultado de Google influye en si el humano hace clic
 - El hueco: hoy un agente **tiene que visitar tu web** para saber qué tools tiene
-- Mientras tanto, **deja un cartel**: un `llms.txt` que diga qué tools tienes y dónde
+- Mientras tanto, **deja un cartel**: un <code>llms.txt</code> que diga qué tools tienes y dónde
 - ¿Posicionará tener tools?
 
+</v-clicks>
+
 <!--
-[38:00] Limitación oficial: Clientes y navegadores deben visitar un site directamente para saber si tiene tools
+[38:00] [CLICK] Entenderte y usarte. [CLICK] Las descripciones deciden (párrafo de Chrome, más abajo).
+
+[CLICK] Limitación oficial: Clientes y navegadores deben visitar un site directamente para saber si tiene tools
 
 Nadie indexa tools, y el explainer descartó un manifiesto fijo: las tools cambian con la ruta y el usuario.
-Mientras tanto, un cartel: llms.txt, un resumen en Markdown para modelos en la raíz de la web.
+[CLICK] Mientras tanto, un cartel: llms.txt, un resumen en Markdown para modelos en la raíz de la web.
 El de knot.kz dice qué tools hay y en qué página (www.knot.kz/llms.txt).
 
 Chrome lo dice en best-practices: la descripción decide qué tool elige el agente, y tiene una guía de Evals para medirlo. Pero ojo: Search Engine Journal y Moz (agosto 2026) coinciden en que WebMCP no es ranking ni indexación; actúa cuando el agente ya está en tu web. Lo que muestra Google se lee antes de visitar la web.
 
-**Futuro**: ¿Posicionará tener tools? Hoy no: nadie lo usa como señal, y Search Engine Journal no encontró preferencia de los agentes por webs con WebMCP. Pero el precedente es schema.org: no sube el ranking, sí habilita resultados enriquecidos. Un buscador que indexe tools cerraría el hueco.
+[CLICK] **Futuro**: ¿Posicionará tener tools? Hoy no: nadie lo usa como señal, y Search Engine Journal no encontró preferencia de los agentes por webs con WebMCP. Pero el precedente es schema.org: no sube el ranking, sí habilita resultados enriquecidos. Un buscador que indexe tools cerraría el hueco.
 -->
 
 ---
@@ -685,9 +697,6 @@ Chrome lo dice en best-practices: la descripción decide qué tool elige el agen
 
 <!--
 [40:15] Cuatro ideas para llevarse a casa.
-
-Apple (WebKit) está en contra: quiere que el agente use la web como un humano, con el HTML.
-La respuesta: Web-MCP no quita nada. Si hay tools, el agente las usa; si no, sigue usando la página como siempre.
 -->
 
 ---
