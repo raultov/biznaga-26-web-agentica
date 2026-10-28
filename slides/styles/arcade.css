@@ -77,7 +77,7 @@
 
 .slidev-layout p,
 .slidev-layout li {
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   line-height: 1.6;
 }
 
@@ -249,7 +249,7 @@ html.print .slidev-page .slidev-layout:has(pre) video.bz-video-full {
 }
 
 .slidev-layout.two-columns.bz-wide-right li {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
 }
 
 /* Wider left column for text-heavy slides with a small media on the right. */
@@ -273,7 +273,7 @@ html.print .slidev-page .slidev-layout:has(pre) video.bz-video-full {
 }
 
 .slidev-layout.bz-examples ul ul > li {
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--bz-muted);
 }
 
@@ -317,7 +317,7 @@ html.print .slidev-page .slidev-layout:has(pre) video.bz-video-full {
 }
 
 .slidev-layout.two-columns.bz-links li {
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   line-height: 1.4;
   margin: 0.55rem 0;
   overflow-wrap: anywhere;
@@ -327,7 +327,7 @@ html.print .slidev-page .slidev-layout:has(pre) video.bz-video-full {
 .slidev-layout table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
 }
 
 .slidev-layout th {

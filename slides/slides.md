@@ -280,7 +280,8 @@ El abstract habla de navigator.modelContext: contarlo como prueba de lo rápido 
 [CLICK] todo. Sin registerTool ni abort(): la tool existe mientras el formulario esté en la página.
 El JS es opcional: `respondWith()` para devolver un resultado propio sin navegar. knot.kz lo usa.
 
-Desde el 8 de octubre la declarativa ya no está en el draft: sigue en Chrome y en un explainer aparte. Es experimental incluso dentro de algo experimental.
+Hace unas semanas sacaron la declarativa del draft: Chrome quiere lanzar primero la imperativa, y la declarativa vendrá después. Sigue en un documento aparte, se sigue trabajando en ella y funciona en el navegador, como veréis en la demo.
+(PR #338, 08-10-2026; Beaufort: "ship the imperative API first, with the declarative API following shortly after".)
 
 Verificado en knot.kz (src/components/Contact.tsx) y en vivo con chrome-debug:
 - `<select>` → enum + anyOf con los textos de cada `<option>` como title
@@ -375,8 +376,6 @@ layoutClass: bz-wide-right bz-spotlight-last
 - **DevTools**: listar, inspeccionar y ejecutar tools
 - *Model Context Tool Inspector*: chatea con tus tools
 - **chrome-devtools-mcp**, **Playwright MCP** y **chrome-debug**: conectan cualquier agente MCP con las tools de una pestaña
-
-> Pruébalo: knot.kz → F12 → Application → WebMCP
 
 ::right::
 
@@ -711,7 +710,6 @@ layoutClass: bz-links
 - **WebMCP**: [webmachinelearning.github.io/webmcp](https://webmachinelearning.github.io/webmcp/)
 - **Explainer e issues**: [github.com/webmachinelearning/webmcp](https://github.com/webmachinelearning/webmcp)
 - **Chrome**: [developer.chrome.com/docs/ai/webmcp](https://developer.chrome.com/docs/ai/webmcp)
-- **Chrome Status**: [chromestatus.com/feature/5117755740913664](https://chromestatus.com/feature/5117755740913664)
 - **MCP**: [modelcontextprotocol.io/specification/2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28)
 - **Angular**: [angular.dev/ai/webmcp](https://angular.dev/ai/webmcp)
 - **Cloudflare**: [blog.cloudflare.com/webmcp](https://blog.cloudflare.com/webmcp/)
@@ -724,7 +722,6 @@ layoutClass: bz-links
 - **chrome-debug**: [github.com/raultov/chrome-debug-mcp](https://github.com/raultov/chrome-debug-mcp)
 - **chrome-devtools-mcp**: [github.com/ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp)
 - **Playwright MCP**: [github.com/microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp)
-- **Tool Inspector**: [github.com/beaufortfrancois/model-context-tool-inspector](https://github.com/beaufortfrancois/model-context-tool-inspector)
 - **media-transcriber**: [github.com/raultov/media-transcriber-mcp](https://github.com/raultov/media-transcriber-mcp)
 
 <!--
