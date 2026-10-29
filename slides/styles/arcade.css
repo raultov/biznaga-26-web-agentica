@@ -182,6 +182,13 @@
   box-shadow: 6px 6px 0 var(--bz-border);
 }
 
+/* Adoption chart under the Web-MCP bullets: shorter than a screenshot so it clears the footer. */
+.slidev-layout p > img[src$='webmcp-adopcion.png'] {
+  display: block;
+  max-height: 205px;
+  margin: 0.4rem auto 0;
+}
+
 .slidev-layout.two-columns {
   column-gap: 2.5rem;
 }

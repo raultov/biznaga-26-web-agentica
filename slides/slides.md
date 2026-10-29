@@ -31,18 +31,27 @@ Introducción, Utilidades y Retos de Web-MCP
 -->
 
 ---
+layout: two-cols
+---
 
 # Player 1
 
 - Raúl Tovar, Senior Software Engineer en **The Workshop**
 - Backend y frontend: me interesa todo lo que pasa entre la base de datos y el navegador
-- Laboratorio de esta charla: **knot.kz**, un side-project donde pruebo WebMCP en producción
+- **knot**: indexador de código semántico para agentes de IA · Rust, open source (MIT), servidor MCP y CLI
+- Su web, **knot.kz**, ya ofrece tools Web-MCP en producción: será el laboratorio de esta charla
+
+::right::
+
+![Portada de knot.kz: Knot, AI Codebase Indexer](/images/knot-home.png)
 
 <!--
 [0:35] 30 segundos máximo. Lo importante: hablo desde las trincheras, no desde el spec.
-knot.kz no se vende: es el sitio donde experimento. Se menciona aquí porque todos los ejemplos
-de código y la demo salen de él, y el primero aparece ya en la slide de document.modelContext.
-TODO: foto, redes, QR a las slides.
+
+knot es un producto mío, open source, que ya usan agentes como Claude Code u opencode. Su web tiene tools Web-MCP de verdad, y por eso la uso como laboratorio. Son tools de una web pequeña, así que no esperéis un e-commerce.
+
+Todos los ejemplos de código y la demo salen de knot.kz.
+Datos si preguntan: v1.12.1 (27-10-2026), más de 100 versiones desde abril de 2026; también existe knot-server.
 -->
 
 ---
@@ -112,6 +121,12 @@ cada petición llega sola y completa.
 
 </v-clicks>
 
+<v-click>
+
+![Evolución de las cargas de página en Chrome que registran tools Web-MCP](/images/webmcp-adopcion.png)
+
+</v-click>
+
 <!--
 [5:15] [CLICK] Web-MCP copia ideas de MCP, como las tools (nombre, descripción, schema de entrada), pero no el protocolo:
 no hay JSON-RPC entre la página y el agente, es una API de JavaScript del navegador.
@@ -129,6 +144,9 @@ pero la TOOL siempre se ejecuta **DENTRO de la pestaña**.
 El agente actúa con los permisos del usuario, no con más.
 
 El agente entra en tu web y juega con tus reglas.
+
+[CLICK] Adopción real: casi el 1 % de las cargas de página en Chrome ya registran tools, sobre todo tiendas Shopify desde julio. Pero solo 1 de cada 11 millones ejecuta una: las webs ya están listas, los agentes todavía no.
+(Fuente: chromestatus.com, contadores 5791 y 5799, 27-10-2026.)
 -->
 
 ---
