@@ -49,7 +49,7 @@
 
 Este repositorio reúne **todo el material de la charla** en un solo sitio:
 
-1. **La presentación** ([Slidev](https://sli.dev), 30 diapositivas) lista para proyectar, ensayar o exportar a PDF/PPTX.
+1. **La presentación** ([Slidev](https://sli.dev), 29 diapositivas) lista para proyectar, ensayar o exportar a PDF/PPTX.
 2. **La demo en vivo de WebMCP**: el prompt con el que se instruye a un agente para que descubra y ejecute las herramientas que un sitio web publica (`PROMPT.md`).
 3. **Las notas de investigación y la bibliografía** de la charla (`notes.txt`).
 4. **Las capturas del caso de seguridad C2PA** (el incidente del bridge de Cloudflare) usadas en la sección *Retos*.
@@ -140,7 +140,7 @@ opencode mcp list
 1. **Introducción** — MCP en 60 segundos, Web-MCP (la página es el servidor), `document.modelContext`, comparativa MCP vs Web-MCP.
 2. **Utilidades** — API declarativa (formularios), API imperativa (hooks), anotaciones (`readOnly`, `untrustedContent`) y herramientas.
 3. **Demo** — knot.kz bajo demanda.
-4. **Retos** — refactorizar para desacoplar, ciclo de vida de la pestaña, costes y abusos, el caso C2PA de Cloudflare, dos bridges en una pestaña y la frontera real entre MCP y Web-MCP.
+4. **Retos** — refactorizar para desacoplar, ciclo de vida de la pestaña, costes y abusos, el caso C2PA de Cloudflare y la frontera real entre MCP y Web-MCP.
 5. **El futuro** — del buscador al agente, cierre.
 
 ## Licencia

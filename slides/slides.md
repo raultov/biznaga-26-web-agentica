@@ -61,7 +61,7 @@ Datos si preguntan: v1.12.1 (27-10-2026), más de 100 versiones desde abril de 2
 - Los agentes usan la interfaz pensada para ti: la leen a base de **capturas de pantalla** y DOM
 - Frágil: el CSS puede despistar al agente
 - Caro: miles de tokens para "leer" una página
-- Ciego: no sabe qué hace un botón hasta que lo pulsa
+- Ciego: si un banner tapa un botón, la captura no lo ve
 
 > ¿Y si la página pudiera decirle al agente qué sabe hacer?
 
@@ -147,6 +147,7 @@ El agente entra en tu web y juega con tus reglas.
 
 [CLICK] Adopción real: casi el 1 % de las cargas de página en Chrome ya registran tools, sobre todo tiendas Shopify desde julio. Pero solo 1 de cada 11 millones ejecuta una: las webs ya están listas, los agentes todavía no.
 (Fuente: chromestatus.com, contadores 5791 y 5799, 27-10-2026.)
+El salto es Shopify. Cloudflare es opt-in y en beta: no lo vincules al 1 %.
 -->
 
 ---
@@ -158,7 +159,7 @@ El agente entra en tu web y juega con tus reglas.
 | Chrome | *Origin trial* desde **149** · flag `#enable-webmcp-testing` |
 | Edge | *Origin trial* desde **150** |
 | Brave | Experimental en Leo AI · flag `#enable-webmcp-testing` |
-| Firefox | Postura **neutral** · sin implementar |
+| Firefox | Postura **neutral** · prototipo, sin fecha |
 | Safari | **En contra** |
 | ChatGPT (escritorio) | **Site tools** en su navegador integrado (agosto 2026) |
 
@@ -635,31 +636,14 @@ Cita: docs/ai/webmcp/secure-tools. Observado en septiembre de 2026.
 
 Reporte (06-09-2026, HackerOne): sin anotación de contenido no fiable no es vulnerabilidad para su política; es "expected behavior".
 Los fallos del bridge (CSP, nombres duplicados) los ven como calidad, no seguridad. Pero "useful for the ongoing development".
--->
 
----
+Moraleja, corta: "mejor que pase ahora, en beta, que después".
 
-# Dos bridges no caben en una pestaña
-
-- El bridge de Cloudflare registra en la página las tools de tu `/mcp`
-- Si tu web ya las registra de forma nativa, los nombres chocan: `InvalidStateError: Duplicate tool name`
-- **Gana quien registre primero**: con buena red, tu web; con red lenta, el bridge
-- Si gana el bridge, tus tools **pierden las anotaciones**
-
-![Panel WebMCP de Cloudflare: packs Content Credentials (C2PA) y Site MCP server](/images/cloudflare-webmcp-packs.png)
-
-<!--
-[36:30] **Cloudflare** (beta desde el 06-08-2026): activas WebMCP en el panel y su CDN añade a cada HTML una línea `<script src="/.webmcp/bridge.js">`. Ese script registra las tools en la página. Tu código no cambia.
-
-Hoy hay dos packs. **Content Credentials**: lee los metadatos C2PA de tus imágenes (autor, herramienta, si es IA) para que el agente responda "¿esta foto es real?". No verifica la firma, y casi ninguna imagen de la web los lleva. **Site MCP server**: convierte las tools de tu `/mcp` en tools WebMCP; cada llamada va a tu servidor con la cookie del usuario, sin OAuth. Todo se ejecuta en el navegador del visitante.
-
-Las 4 tools portables de knot.kz están a la vez en la página y en /mcp.
-
-Probado en producción el 05-10-2026 con el pack activado. 
-
-**Red normal**: ganan mis tools nativas 10 de 10, y el bridge deja 4 errores sin capturar en la consola de cada visitante. 
-
-**Red lenta y sin caché**: gana el bridge 3 de 3, y get-latest-releases pierde su untrustedContent: el bridge solo copia nombre, descripción y schema. La conclusión: bridge O nativo, no los dos.
+RESPALDO para preguntas, no decirlo (era la slide "Dos bridges no caben en una pestaña", quitada el 04-11-2026):
+- El otro pack del bridge, **Site MCP server**, registra en la página las tools de tu `/mcp`; cada llamada va a tu servidor con la cookie del usuario, sin OAuth.
+- Si tu web ya las registra de forma nativa, los nombres chocan (`InvalidStateError: Duplicate tool name`) y gana quien registre primero.
+- Probado en producción el 05-10-2026: con red normal ganan las nativas 10 de 10 (y el bridge deja 4 errores sin capturar en la consola); con red lenta y sin caché gana el bridge 3 de 3, y get-latest-releases pierde su untrustedContent: el bridge solo copia nombre, descripción y schema.
+- Conclusión: bridge O nativo, no los dos.
 -->
 
 ---
@@ -672,7 +656,7 @@ round: FINAL BOSS
 Que te encuentren ya no basta
 
 <!--
-[37:45]
+[36:30]
 -->
 
 ---
@@ -690,7 +674,7 @@ Que te encuentren ya no basta
 </v-clicks>
 
 <!--
-[38:00] [CLICK] Entenderte y usarte. [CLICK] Las descripciones deciden (párrafo de Chrome, más abajo).
+[36:45] [CLICK] Entenderte y usarte. [CLICK] Las descripciones deciden (párrafo de Chrome, más abajo).
 
 [CLICK] Limitación oficial: Clientes y navegadores deben visitar un site directamente para saber si tiene tools
 
@@ -713,7 +697,9 @@ Chrome lo dice en best-practices: la descripción decide qué tool elige el agen
 - Declara tus flags y **valida en código**: la seguridad es parte del contrato
 
 <!--
-[40:15] Cuatro ideas para llevarse a casa.
+[39:00] Cuatro ideas para llevarse a casa.
+
+Punto 1: publícala **también** en MCP, no "en vez de" Web-MCP. knot.kz tiene las dos.
 -->
 
 ---
@@ -743,7 +729,7 @@ layoutClass: bz-links
 - **media-transcriber**: [github.com/raultov/media-transcriber-mcp](https://github.com/raultov/media-transcriber-mcp)
 
 <!--
-[41:30]
+[40:15]
 -->
 
 ---
@@ -759,5 +745,5 @@ Raúl Tovar
 **Slides (PDF) y recursos** · github.com/raultov/biznaga-26-web-agentica
 
 <!--
-[42:00] Q&A. El QR lleva al repo: arriba del todo, el PDF de las slides y todos los enlaces de la charla.
+[40:45] Q&A. El QR lleva al repo: arriba del todo, el PDF de las slides y todos los enlaces de la charla.
 -->

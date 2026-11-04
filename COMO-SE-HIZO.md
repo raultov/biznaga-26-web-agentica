@@ -87,8 +87,10 @@ charla: es justo ahora, en la fase experimental, cuando estas cosas tienen que s
 
 La pregunta inicial también tuvo respuesta. El 5 de octubre probé en producción el pack que
 convierte el `/mcp` en tools Web-MCP: con buena red ganan siempre las tools nativas; con red
-lenta gana el bridge, y entonces se pierden las anotaciones. De ahí la slide "Dos bridges no
-caben en una pestaña" y su conclusión: **bridge o nativo, no los dos**.
+lenta gana el bridge, y entonces se pierden las anotaciones. Conclusión: **bridge o nativo, no
+los dos**. Llegó a tener slide propia ("Dos bridges no caben en una pestaña"), pero la quité
+en el ensayo 15: era lo más específico de la charla y la idea de fondo ya la cuenta el caso
+C2PA. Se queda en las notas, por si sale en las preguntas.
 
 ## 5. Cuando la spec se mueve bajo tus pies
 
