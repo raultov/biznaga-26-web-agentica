@@ -10,7 +10,7 @@ slides/dist-export/
 .env.*
 
 # Raw recordings and captures (large originals; slides use slides/public/)
-images/
+/images/
 
 # Rehearsal transcripts and analysis (local only)
 rehearsals/
