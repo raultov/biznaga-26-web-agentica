@@ -61,7 +61,7 @@ Datos si preguntan: v1.12.1 (27-10-2026), más de 100 versiones desde abril de 2
 - Los agentes usan la interfaz pensada para ti: la leen a base de **capturas de pantalla** y DOM
 - Frágil: el CSS puede despistar al agente
 - Caro: miles de tokens para "leer" una página
-- Ciego: si un banner tapa un botón, la captura no lo ve
+- Ciego: no sabe qué hace un botón hasta que lo pulsa
 
 > ¿Y si la página pudiera decirle al agente qué sabe hacer?
 
