@@ -691,7 +691,7 @@ Chrome lo dice en best-practices: la descripción decide qué tool elige el agen
 
 # Game over... o no
 
-- Su valor está en el **efecto sobre la sesión**: si la tool tiene sentido sin navegador, publícala también en MCP
+- Su valor está en el **efecto sobre la sesión** del usuario
 - Web-MCP convierte tu frontend en una **API para agentes**
 - Exige arquitectura: casos de uso desacoplados de la UI
 - Declara tus flags y **valida en código**: la seguridad es parte del contrato
@@ -699,7 +699,8 @@ Chrome lo dice en best-practices: la descripción decide qué tool elige el agen
 <!--
 [39:00] Cuatro ideas para llevarse a casa.
 
-Punto 1: publícala **también** en MCP, no "en vez de" Web-MCP. knot.kz tiene las dos.
+Punto 1: la tool hace lo que el usuario podría hacer, con su sesión, ni más ni menos.
+(Lo de publicar también en MCP lo que no necesita navegador ya lo cuentan la demo 3 y la slide MCP vs Web-MCP: aquí no se repite.)
 -->
 
 ---

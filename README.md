@@ -66,7 +66,7 @@ En resumen: si quieres **dar o replicar la charla**, este repo tiene todo lo nec
 | `webmcp-biznaga-2026.pdf` | PDF de las slides enlazado desde el QR (copia versionada de `slides/dist-export/`) |
 | `PROMPT.md` | Prompt para que un agente LLM use las tools WebMCP de un sitio (demo con `chrome-debug` y [knot.kz](https://www.knot.kz)) |
 | `notes.txt` | Bibliografía, guion de la demo y notas de argumentación de la charla |
-| `images/security/` | Capturas del caso de seguridad C2PA que se analiza en *Retos* |
+| `slides/public/images/flags-*.png` | Capturas del caso de seguridad C2PA que se analiza en *Retos* |
 
 ## Requisitos
 
@@ -145,4 +145,6 @@ opencode mcp list
 
 ## Licencia
 
-Repositorio privado. Los materiales están pensados para la charla de BiznagaFest 2026; para cualquier otro uso, escríbeme primero.
+El contenido de este repositorio (slides, notas, textos e imágenes propias) se publica bajo licencia [Creative Commons Atribución 4.0 Internacional (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.es): puedes compartirlo y adaptarlo para cualquier uso, citando la autoría (Raúl Tovar, BiznagaFest 2026) y enlazando a este repositorio.
+
+Las marcas, logotipos y capturas de productos de terceros que aparecen en las slides pertenecen a sus respectivos titulares.

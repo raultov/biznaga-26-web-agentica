@@ -16,6 +16,7 @@ slides/dist-export/
 rehearsals/
 
 # OS / editor
+.idea/
 .DS_Store
 Thumbs.db
 *.log
