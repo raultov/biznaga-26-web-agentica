@@ -147,4 +147,10 @@ opencode mcp list
 
 El contenido de este repositorio (slides, notas, textos e imágenes propias) se publica bajo licencia [Creative Commons Atribución 4.0 Internacional (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.es): puedes compartirlo y adaptarlo para cualquier uso, citando la autoría (Raúl Tovar, BiznagaFest 2026) y enlazando a este repositorio.
 
-Las marcas, logotipos y capturas de productos de terceros que aparecen en las slides pertenecen a sus respectivos titulares.
+**Excepciones**: no se publican bajo CC BY 4.0 y pertenecen a sus respectivos titulares:
+
+- El logotipo de BiznagaFest (`slides/public/images/biznaga-logo.svg`) y la marca BiznagaFest, propiedad de la organización del evento.
+- Las capturas y grabaciones de interfaces y productos de terceros (Chrome DevTools, chromestatus.com, Cloudflare, Brave y otros) en `slides/public/images/` y `slides/public/videos/`, incluidas aquí a título de cita e ilustración.
+- Las marcas y nombres de productos citados.
+
+El tema visual de las slides se inspira en la web de [BiznagaFest](https://www.biznagafest.com) (paleta de colores y tipografías); el código CSS es propio. Las fuentes (Press Start 2P, Rajdhani, Inter y JetBrains Mono) se instalan desde npm y tienen licencia SIL Open Font License.
